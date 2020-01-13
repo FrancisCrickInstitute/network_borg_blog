@@ -1,0 +1,7 @@
+ntp server 10.9.9.9 use-vrf management
+ntp server 10.8.8.8 prefer use-vrf management
+ntp source-interface  Vlan2901
+{%- if VAR0 is defined %}
+ntp authentication-key 1 md5 {{ VAR0 }} 7
+{%- endif %}
+ntp logging

@@ -1,0 +1,16 @@
+{%- if VAR1 is defined %}
+snmp-server trap-source {{ VAR1 }}
+{%- else %}
+snmp-server trap-source Loopback0
+{%- endif %}
+{%- if VAR0 is defined %}
+snmp-server location {{ VAR0 }}
+{%- endif %}
+snmp-server contact My Team, My Company, My Department, My Number
+snmp-server enable traps snmp linkdown linkup coldstart warmstart
+snmp-server enable traps mac-notification change move
+{%- if VAR2 is defined %}
+snmp-server host 10.1.2.3 vrf Mgmt-vrf version 2c {{ VAR2 }}
+snmp-server host 10.3.2.1 vrf Mgmt-vrf version 2c {{ VAR2 }}
+snmp-server community {{ VAR2 }} RO
+{%- endif %}

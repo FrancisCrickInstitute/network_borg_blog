@@ -1,0 +1,7 @@
+{%- if VAR0 is defined %}
+ntp authentication-key 1 md5 {{ VAR0 }} 7
+{%- endif %}
+ntp trusted-key 1
+ntp source Vlan2902
+ntp server 10.9.9.9 key 1
+ntp server 10.8.8.8 key 1

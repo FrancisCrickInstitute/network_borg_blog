@@ -1,0 +1,11 @@
+logging level aaa 5
+aaa authentication login default group TACACS_PLUS
+aaa authorization config-commands default group TACACS_PLUS local
+aaa authorization commands default group TACACS_PLUS local
+aaa authorization config-commands console group TACACS_PLUS local
+aaa authorization commands console group TACACS_PLUS local
+aaa authentication dot1x default group BP_ISE
+aaa accounting dot1x default group BP_ISE
+aaa authorization cts default group BP_ISE
+aaa accounting default group TACACS_PLUS
+tacacs-server directed-request
