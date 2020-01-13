@@ -37,7 +37,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
     if netmko_mode == 'get':
         try:
             while True:
-                netmko_log.append(YAML_TK['YAML_fqdn'] + ': > Payload: "' + object + '"')
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Payload : "' + object + '"')
 
                 net_connect = ConnectHandler (device_type=driver, ip=YAML_TK['YAML_fqdn'], username=SESSION_TK['ENV_user_un'], password=SESSION_TK['ENV_user_pw'])
 
@@ -50,7 +50,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'
                 if err in get:
-                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': < Response "' + object + '" ERR: Invalid Command!')
+                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Response "' + object + '" ERR: Invalid Command!')
                     break
 
                 # Response back will be RAW text. By default, Python will return a
@@ -64,12 +64,12 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                     stripped = line.strip()
                     netmko_dict.append(stripped)
 
-                netmko_log.append(YAML_TK['YAML_fqdn'] + ': < Response: "' + object + '" OK ' + u'\u2714')
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Response "' + object + '" OK ' + u'\u2714')
                 netmko_status = True
                 break
 
         except Exception as e:
-            netmko_log.append(YAML_TK['YAML_fqdn'] + ': > Payload "' + object + '" ERR: ' + str(e))
+            netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Payload "' + object + '" ERR: ' + str(e))
             netmko_status = False
 
     # If NetMiko Mode = SET (i.e. send configuration command)
@@ -86,7 +86,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'
                 if err in set:
-                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': < Response "' + object + '" ERR: Invalid Command!')
+                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Response "' + object + '" ERR: Invalid Command!')
                     break
 
                 # Save Configuration and Disconnect
@@ -97,7 +97,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 break
 
         except Exception as e:
-            netmko_log.append(YAML_TK['YAML_fqdn'] + ': > Config Response: && "' + object + '" ERR: ' + str(e))
+            netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Config Response && : "' + object + '" ERR: ' + str(e))
             netmko_status = False
 
     else:

@@ -118,4 +118,7 @@ Publicly Available Network Scripts
 ## Version 0.9
 - Moved NXAPI payload definition for NXAPI from _network_borg_sync.py to _network_borg_nxapi.py.
 - Wrote _network_borg_nxapi.py so JSON payload structure is no longer defined in GETSET module. GETSET only returns command to be sent and not the entire JSON payload.
-- Updated _network_borg_getset.py so only returns Payload command and not entire JSON payload. 
+- Updated _network_borg_getset.py so only returns Payload command and not entire JSON payload.
+
+## Version 0.9.1
+- Logging corrections

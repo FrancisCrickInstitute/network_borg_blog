@@ -28,7 +28,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
             try:
                 # TEMPLATE SET
                 template_set = {
-                    #'USER': # Use User with caution!!!
+                    #'USER': # Use User with caution!!! Don't bite off the hand which feeds you.
                     #    [
                     #        {
                     #        'TEMPLATE': 'template_n7k_dev_user.j2',
@@ -48,7 +48,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                                 [
                                     {
                                     'SNMP_LOC': YAML_TK['YAML_loc'], #YAML Inventory
-                                    'SNMP_SRC': 'Loopback0',
+                                    'SNMP_SRC': 'loopback0',
                                     'SNMP_KEY': SESSION_TK['ENV_snmp_key'] #System Enviro Var
                                     }
                                 ]
@@ -74,9 +74,9 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                         ]
                     }
 
-                # PAYLOAD SET 
+                # PAYLOAD SET
                 payload_set = {
-                    #'USER': # Use USER with caution!!!
+                    #'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
                     #    [
                     #        {
                     #        'CMD': 'show run | inc username'
@@ -113,7 +113,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
             try:
                 # TEMPLATE SET
                 template_set = {
-                    #'USER': # Use USER with caution!!!
+                    #'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
                     #    [
                     #        {
                     #        'TEMPLATE': 'template_n5k_dev_user.j2',
@@ -161,7 +161,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
 
                 # PAYLOAD SET
                 payload_set = {
-                    #'USER': # Use USER with caution!!!
+                    #'USER': # Use USER with caution!!! on't bite off the hand which feeds you. 
                     #    [
                     #        {
                     #        'CMD': 'show run | inc username'

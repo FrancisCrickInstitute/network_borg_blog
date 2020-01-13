@@ -18,7 +18,7 @@ requests.packages.urllib3.disable_warnings(
 def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
 
     if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (_network_borg_nxapi.py) : Payloads Received:')
+        print('\n**DEBUG (_network_borg_nxapi.py) : Objects Received:')
         print('SESSION_TK:       ' + str(SESSION_TK))
         print('YAML_TK:          ' + str(YAML_TK))
         print('ITEM:             ' + str(item))
@@ -43,9 +43,15 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
 
     if nxapi_mode == 'get':
 
+        # Set the NXAPI method to cli_ascii.
         nxapi_method = 'cli_ascii'
+
+        # Example object:
+        # [{'CMD': 'show run aaa'}]
+        # Extract the value of CMD
         command = object[0]['CMD']
 
+        # Define payload to be posted via JSON RPC
         payload=[
           {
             "jsonrpc": "2.0",
@@ -59,6 +65,7 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
         ]
 
         try:
+            # Send the JSON RPC payload
             response = requests.post(
                 myurl,
                 data=json.dumps(payload),
@@ -68,22 +75,22 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
             ).json()
 
             if SESSION_TK['ARG_debug'] == True:
-                print('\n**DEBUG (_network_borg_nxapi.py) : Payload Response:')
-                print(str(response))
+                print('RESPONSE:         ' + str(response))
 
-            if 'result' in str(response):
+            if 'result' in str(response): # 'result' implies OK.
                 # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
+                # Parse through garbx to clean msg blob
                 nxapi_list = garbx(response)
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Response Successful ' + u'\u2714')
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Successful ' + u'\u2714')
                 nxapi_status = True
 
-            elif 'error' in str(response):
+            elif 'error' in str(response): # 'error' implies BAD.
                 # Example Response - {'jsonrpc': '2.0', 'error': {CROPPED}, 'id': 2}
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Response Unsuccessful! Reason: "' + str(response['error']['data']['msg'].strip()))
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Unsuccessful! Reason: "' + str(response['error']['data']['msg'].strip()))
                 nxapi_status = False
 
             else:
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Response Unhandled ' + str(response))
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Unhandled ' + str(response))
                 nxapi_status = False
 
             return nxapi_status, nxapi_log, nxapi_list
@@ -101,12 +108,13 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
 
     elif nxapi_mode == 'set':
 
+        # Set the NXAPI method to cli.
         nxapi_method = 'cli'
 
         try:
             if SESSION_TK['ARG_commit'] == True:
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': Config Payload: && "' + str(object) + '"')
 
+                # Define payload to be posted via JSON RPC
                 payload=[
                   {
                     "jsonrpc": "2.0",
@@ -119,6 +127,7 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                   }
                 ]
 
+                # Send the JSON RPC payload
                 response = requests.post(
                     myurl,
                     data=json.dumps(payload),
@@ -127,28 +136,22 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                     verify=False
                 ).json()
 
-                print('REPOSNSE: ' + str(response))
-
                 if SESSION_TK['ARG_debug'] == True:
-                    print('\n**DEBUG (_network_borg_nxapi.py) : Payload Response:')
-                    print(str(response))
+                    print('RESPONSE:         ' + str(response))
 
                 if 'result' in str(response):
                     # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Response Successful ' + u'\u2714')
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Successful "' + str(object) + '" ' + '\u2714')
                     nxapi_status = True
 
                 elif 'error' in str(response):
                     # Example Response - {'jsonrpc': '2.0', 'error': {CROPPED}, 'id': 2}
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Response Unsuccessful! Reason: "' + str(getset_payload[item]['params']['cmd']) + '" ' + str(response['error']['data']['msg'].strip()))
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Unsuccessful! Reason: "' + str(object) + '" ' + str(response['error']['data']['msg'].strip()))
                     nxapi_status = False
 
                 else:
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Response Unhandled ' + str(response))
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Unhandled: ' + str(response))
                     nxapi_status = False
-
-
-                nxapi_log.append(YAML_TK['YAML_fqdn']+ ': < Config Response: && "' + str(response) + '"')
 
                 # Copy running-config startup-config
                 wrmem=[
@@ -171,20 +174,20 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                     verify=False
                 ).json()
 
-                # Do not log reponse!!!
+                # Do not log response! It generates lots of output!
 
                 nxapi_status = True
 
                 return nxapi_status, nxapi_log, nxapi_list
 
             else: # commit Flag not True so report only
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: !! "' + str(object) + '"')
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Config Payload !! : "' + str(object) + '"')
                 nxapi_status = False
                 return nxapi_status, nxapi_log, nxapi_list
 
         except Exception as e:
-            sync_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: ERR "' + str(object) + '" < RESULT: FAIL ' + str(e))
-            nxapi_status = Flase
+            nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Config Payload ERR : "' + str(object) + '" < RESULT: FAIL ' + str(e))
+            nxapi_status = False
             return nxapi_status, nxapi_log, nxapi_list
     else:
         nxapi_log.append(YAML_TK['YAML_fqdn'] + ': NXAPI Mode Invalid')

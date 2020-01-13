@@ -265,18 +265,17 @@ def sync(SESSION_TK, YAML_TK):
                                 for object in objects:
                                     try:
                                         if SESSION_TK['ARG_commit'] == True:
-                                            sync_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: && "' + str(object) + '"')
-
+                                            
                                             netmko_status, netmko_log, netmko_dict = netmko (SESSION_TK, YAML_TK, netmko_mode, item, object)
 
                                             for line in netmko_log:
                                                 sync_log.append(line)
 
                                         else:
-                                            sync_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: !! "' + str(object) + '"')
+                                            sync_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
 
                                     except Exception as e:
-                                        sync_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: ERR "' + str(object) + '" < RESULT: FAIL ' + str(e))
+                                        sync_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Config Payload ERR : "' + str(object) + '" < RESULT: FAIL ' + str(e))
 
                     elif YAML_TK['YAML_driver'] == 'nxos_ssh': # Cisco NXOS
 
@@ -293,16 +292,17 @@ def sync(SESSION_TK, YAML_TK):
                                 for object in objects:
                                     try:
                                         if SESSION_TK['ARG_commit'] == True:
+
                                             nxapi_status, nxapi_log, nxapi_dict = nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object)
 
                                             for line in nxapi_log:
                                                 sync_log.append(line)
 
                                         else: # commit Flag not True so report only
-                                            sync_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: !! "' + str(object) + '"')
+                                            sync_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
 
                                     except Exception as e:
-                                        sync_log.append(YAML_TK['YAML_fqdn'] + ': > Config Payload: ERR "' + str(object) + '" < RESULT: FAIL ' + str(e))
+                                        sync_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload ERR "' + str(object) + '" < RESULT: FAIL ' + str(e))
 
                     else:
                         sync_log.append(YAML_TK['YAML_fqdn'] + ': Driver ' + YAML_TK['YAML_driver'] + ' Not Supported!')
