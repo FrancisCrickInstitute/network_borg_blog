@@ -122,3 +122,11 @@ Publicly Available Network Scripts
 
 ## Version 0.9.1
 - Logging corrections
+
+## Version 0.9.2
+- Merged _network_borg_nxapi_garbx.py into _network_borg_nxapi.py.
+- Removed confusing print line from network_borg.py.
+- Corrected _network_borg_getset.py incorrectly referencing "elif SESSION_TK['ENV'] == 'Production':" Should be "elif YAML_TK['YAML_env'] == 'Production'".
+- Corrected logic in _network_borg_sync.py to break if status returned by _network_borg_nxapi.py or _network_borg_netmko.py is False.
+- Corrected missing logging in _network_borg_netmko.py
+- Address workflow through _network_borg_sync.py module. Now calls individual functions in a structured manner and only proceeds if status of previous workflow function is True (OK)

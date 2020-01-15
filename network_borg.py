@@ -146,8 +146,6 @@ def main():
         SYNC
         '''
 
-        print('\n' + YAML_TK['YAML_fqdn'] + ': SYNC PROCESS STARTED...')
-
         sync_status, sync_log = sync(SESSION_TK, YAML_TK)
 
         for line in sync_log:

@@ -30,14 +30,14 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
         driver = 'cisco_nxos'
 
     netmko_log = []
-    netmko_dict = []
+    netmko_list = []
     netmko_status = False
 
     # If NetMiko Mode = GET (i.e. send show command)
     if netmko_mode == 'get':
         try:
             while True:
-                netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Payload : "' + object + '"')
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Payload : "' + object + '"')
 
                 net_connect = ConnectHandler (device_type=driver, ip=YAML_TK['YAML_fqdn'], username=SESSION_TK['ENV_user_un'], password=SESSION_TK['ENV_user_pw'])
 
@@ -50,7 +50,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'
                 if err in get:
-                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Response "' + object + '" ERR: Invalid Command!')
+                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" ERR: Invalid Command!')
                     break
 
                 # Response back will be RAW text. By default, Python will return a
@@ -58,18 +58,18 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 # boundaries. Splitlines sets 'keepends' to true: See:
                 # https://docs.python.org/3/library/stdtypes.html#string-methods
                 # str.splitlines([keepends])
-                netmko_list = get.splitlines()
+                netmko_lines = get.splitlines()
 
-                for line in netmko_list:
+                for line in netmko_lines:
                     stripped = line.strip()
-                    netmko_dict.append(stripped)
+                    netmko_list.append(stripped)
 
-                netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Response "' + object + '" OK ' + u'\u2714')
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" OK ' + u'\u2714')
                 netmko_status = True
                 break
 
         except Exception as e:
-            netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Payload "' + object + '" ERR: ' + str(e))
+            netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Payload "' + object + '" ERR: ' + str(e))
             netmko_status = False
 
     # If NetMiko Mode = SET (i.e. send configuration command)
@@ -86,21 +86,22 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'
                 if err in set:
-                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Response "' + object + '" ERR: Invalid Command!')
+                    netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" ERR: Invalid Command!')
                     break
 
                 # Save Configuration and Disconnect
                 net_connect.save_config()
                 net_connect.disconnect()
 
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" OK ' + u'\u2714')
                 netmko_status = True
                 break
 
         except Exception as e:
-            netmko_log.append(YAML_TK['YAML_fqdn'] + ': [' + item + '] Config Response && : "' + object + '" ERR: ' + str(e))
+            netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Response && : "' + object + '" ERR: ' + str(e))
             netmko_status = False
 
     else:
         netmko_log.append(YAML_TK['YAML_fqdn'] + ': NetMiko Mode Not Defined!')
 
-    return netmko_status, netmko_log, netmko_dict
+    return netmko_status, netmko_log, netmko_list

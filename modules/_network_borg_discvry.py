@@ -21,8 +21,6 @@ def discvry(SESSION_TK, YAML_TK):
     discvry_log = []
     discvry_dict = {}
 
-    print('\n' + YAML_TK['YAML_fqdn'] + ': NAPALM Discovery Started. Please Wait...')
-
     discvry_log.append(YAML_TK['YAML_fqdn'] + ': NAPALM DISCOVERY STARTED...')
     discvry_status = False # Unless otherwise overwritten
 
