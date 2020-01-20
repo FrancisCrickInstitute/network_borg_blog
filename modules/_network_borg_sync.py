@@ -23,6 +23,8 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
+sync_log = []
+
 # Colour class. Used to format screen output.
 class bcolors:
     HEADER = '\033[95m'
