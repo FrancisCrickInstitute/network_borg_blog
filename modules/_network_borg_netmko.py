@@ -64,7 +64,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                     stripped = line.strip()
                     netmko_list.append(stripped)
 
-                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" OK ' + u'\u2714')
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" OK')
                 netmko_status = True
                 break
 
@@ -93,7 +93,7 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
                 net_connect.save_config()
                 net_connect.disconnect()
 
-                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" OK ' + u'\u2714')
+                netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Response "' + object + '" OK')
                 netmko_status = True
                 break
 

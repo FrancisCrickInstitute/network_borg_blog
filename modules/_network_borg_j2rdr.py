@@ -107,7 +107,7 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
                             print('\n**DEBUG (_network_borg_sync.py) : [' + item + '] J2 Filtered List:')
                             print(j2rdr_list)
 
-                        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Successful ' + u'\u2714')
+                        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Successful ')
                         j2rdr_status = True
 
                     except Exception as e:

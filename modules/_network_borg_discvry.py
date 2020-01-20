@@ -51,7 +51,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False
@@ -71,7 +71,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False
@@ -92,7 +92,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False
@@ -122,7 +122,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False
@@ -144,7 +144,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False
@@ -166,7 +166,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False
@@ -188,7 +188,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_dict['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
-                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered ' + u'\u2714')
+                discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
 
             except Exception as e:
                 discvry_status = False

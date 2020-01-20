@@ -101,7 +101,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -186,7 +186,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -271,7 +271,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -363,7 +363,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -448,7 +448,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -521,7 +521,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -588,7 +588,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -656,7 +656,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -724,7 +724,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
@@ -791,18 +791,18 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     }
 
                 getset_status = True
-                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets ' + u'\u2714')
+                getset_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Retrieved Template & Payload Sets')
 
             except Exception as e:
                 getset_log.append(YAML_TK['YAML_fqdn'] + ': - Template Retrieval Error - ' + str(e))
 
         else:
             getset_status = False
-            getset_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Group ' + diccovry_dict['GROUP'] + ' Not Supported!!!')
+            getset_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Group ' + diccovry_dict['GROUP'] + ' Not Supported!')
 
 
     else: # Environment
         getset_status = False
-        getset_log.append(YAML_TK['YAML_fqdn'] + ':  GETSET Environment ' + YAML_TK['YAML_env'] + ' Not Supported!!!')
+        getset_log.append(YAML_TK['YAML_fqdn'] + ':  GETSET Environment ' + YAML_TK['YAML_env'] + ' Not Supported!')
 
     return getset_status, getset_log, template_set, payload_set

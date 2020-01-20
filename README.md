@@ -140,3 +140,4 @@ Publicly Available Network Scripts
 
 ## Version 0.9.5
 - Added colour to debug output
+- Hardened logging. Scrip developed on macOS but when running on Linux, dicts were not getting Zeroised but cached leading to confusing output.  
