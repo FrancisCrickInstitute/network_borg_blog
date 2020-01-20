@@ -26,6 +26,18 @@ requests.packages.urllib3.disable_warnings(
 # Initialise Global Sync Log List
 sync_log = []
 
+# Colour class. Used to format screen output.
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    RED = '\33[91m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 # DISCOVERY
 # REQ: SESSION_TK, YAML_TK
 # RTN: sync_discvry_status, sync_discvry_dict
@@ -305,7 +317,9 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
                     if netmko_status == True:
                         sync_push_status = True
 
-        else: # SESSION_TK['ARG_commit'] == True:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': PUSH Module Successful')
+
+        else: # SESSION_TK['ARG_commit'] == False:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (IOS NETMIKO) Initialised. Non-Commit Mode !! ...')
 
             for item, objects in sync_diffgen_dict.items():
@@ -338,7 +352,9 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
                     if nxapi_status == True:
                         sync_push_status = True
 
-        else: # SESSION_TK['ARG_commit'] == True:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': PUSH Module Successful')
+
+        else: # SESSION_TK['ARG_commit'] == False:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (NX-OS NXAPI) Initialised. Non-Commit Mode !! ...')
 
             for item, objects in sync_diffgen_dict.items():
@@ -358,6 +374,12 @@ def sync(SESSION_TK, YAML_TK):
     sync_loop = True
 
     sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC Initialised...')
+
+    if SESSION_TK['ARG_debug'] == True:
+        print(bcolors.OKBLUE)
+        print(bcolors.BOLD)
+        print('\n**DEBUG (_network_borg_sync.py) : ### ' + YAML_TK['YAML_fqdn'] + ' DEBUG START ###')
+        print(bcolors.ENDC)
 
     '''
     CONDITIONAL WORKFLOW...
@@ -407,6 +429,7 @@ def sync(SESSION_TK, YAML_TK):
                             # PUSH
                             # REQ: SESSION_TK, YAML_TK, sync_diffgen_dict
                             # RTN: sync_push_status
+
                             res = not bool(sync_diffgen_dict)
 
                             if res == True:

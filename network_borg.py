@@ -27,6 +27,7 @@ if (sys.version_info < (3, 6)):
 # Master Log List []
 master_log = []
 
+# Colour class. Used to format screen output.
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'

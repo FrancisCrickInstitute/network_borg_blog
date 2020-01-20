@@ -136,4 +136,7 @@ Publicly Available Network Scripts
 - Updated _network_borg_diffgen.py to align with new variable names.
 
 ## Version 0.9.4
-- Added requirements.txt 
+- Added requirements.txt
+
+## Version 0.9.5
+- Added colour to debug output
