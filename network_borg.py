@@ -110,6 +110,15 @@ def main():
     for line in yaml_log:
         master_log.append(line)
 
+    print(bcolors.OKBLUE)
+    print(bcolors.BOLD)
+    print('______________________________________________________________')
+    print('WORKING ON HOST(S):\n')
+    for item, object in yaml_dict.items():
+        print('* ' + item)
+    print('______________________________________________________________')
+    print(bcolors.ENDC)
+
     # For yaml_host in YAML Dict, process...
     for yaml_host in yaml_dict.items():
 
@@ -140,7 +149,7 @@ def main():
         if SESSION_TK['ARG_debug'] == True:
             print(bcolors.OKBLUE)
             print(bcolors.BOLD)
-            print('**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' YAML Results:')
+            print('**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' Node Information:')
             print('FQDN:             ' + YAML_TK['YAML_fqdn'])
             print('DRIVER:           ' + YAML_TK['YAML_driver'])
             print('LOC:              ' + YAML_TK['YAML_loc'])
@@ -148,6 +157,8 @@ def main():
             print('ENVIRO:           ' + YAML_TK['YAML_env'])
             print(bcolors.ENDC)
 
+        else:
+            print('Working On ' + YAML_TK['YAML_fqdn'] + '... Please Wait...')
         '''
         SYNC
         '''
@@ -170,10 +181,11 @@ def main():
     print('*********************************************************************')
     print('**                             RESULTS                             **')
     print('*********************************************************************')
-    print(bcolors.ENDC)
 
     for line in master_log:
         print(line)
 
+    print(bcolors.ENDC)
+    
 if __name__ == "__main__":
     main()

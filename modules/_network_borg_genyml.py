@@ -90,26 +90,13 @@ def genyml(yaml_arg):
     except:
        pass # Not a group
 
-
     # If neither HOST or GROUP
     if is_group == False and is_host == False:
         yaml_log.append('ERROR: ' + yaml_arg + ' is neither a valid YAML Group or Hostname!\n')
         yaml_status = False
 
-    else:
-        pass
-
     # If yaml_status == False, YAML Dicovery Error
     if yaml_status == False:
         yaml_log.append('ERROR: YAML Discovery Error!')
-        return yaml_status, yaml_log, yaml_dict
-
-    else:
-    # Is neither a valid YAML Group or Host
-        print('______________________________________________________________')
-        print('WORKING ON HOST(S):\n')
-        for item, object in yaml_dict.items():
-            print('* ' + item)
-        print('______________________________________________________________')
 
     return yaml_status, yaml_log, yaml_dict
