@@ -288,8 +288,6 @@ def sync_diffgen(SESSION_TK, YAML_TK, sync_getcfg_dict, sync_j2rdr_dict):
 # RTN: sync_push_status
 def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
 
-    # Initialise Global Sync Log List
-    sync_log = []
     sync_push_status = False
 
     if YAML_TK['YAML_driver'] == 'ios': # Cisco IOS
@@ -368,6 +366,9 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
 SYNC
 '''
 def sync(SESSION_TK, YAML_TK):
+
+    # Initialise Global Sync Log List
+    sync_log = []
 
     sync_status = False
     sync_loop = True
