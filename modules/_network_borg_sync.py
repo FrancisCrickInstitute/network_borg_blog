@@ -23,9 +23,6 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
-# Initialise Global Sync Log List
-sync_log = []
-
 # Colour class. Used to format screen output.
 class bcolors:
     HEADER = '\033[95m'
@@ -291,6 +288,8 @@ def sync_diffgen(SESSION_TK, YAML_TK, sync_getcfg_dict, sync_j2rdr_dict):
 # RTN: sync_push_status
 def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
 
+    # Initialise Global Sync Log List
+    sync_log = []
     sync_push_status = False
 
     if YAML_TK['YAML_driver'] == 'ios': # Cisco IOS
