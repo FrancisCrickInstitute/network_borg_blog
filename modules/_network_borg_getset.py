@@ -74,7 +74,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
 
                 # PAYLOAD SET
                 payload_set = {
-                    #'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
+                    #'USER': # Use USER with caution!!! Don't bite off the hand which feeds you.
                     #    [
                     #        {
                     #        'CMD': 'show run | inc username'
@@ -111,7 +111,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
             try:
                 # TEMPLATE SET
                 template_set = {
-                    'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
+                    'USER': # Use USER with caution!!! Don't bite off the hand which feeds you.
                         [
                             {
                             'TEMPLATE': 'template_n5k_dev_user.j2',
@@ -196,7 +196,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
             try:
                 # TEMPLATE SET
                 template_set = {
-                    #'USER': # Use USER with caution!!!
+                    #'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
                     #    [
                     #        {
                     #        'TEMPLATE': 'template_c3k_dev_user.j2',

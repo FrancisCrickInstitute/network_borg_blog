@@ -2,6 +2,9 @@
 #
 # Python3 Network Borg Syncronisation Module
 
+__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__   = 'None. Enjoy :-)'
+
 import requests # Required to disable SSH warnings
 import json # Required for NXAPI JSON RPC
 
@@ -16,22 +19,17 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
+# Initialise Global Sync Log List
+sync_log = []
 
-def sync(SESSION_TK, YAML_TK):
+# DISCOVERY
+# REQ: SESSION_TK, YAML_TK
+# RTN: sync_discvry_status, sync_discvry_dict
+def sync_discvry(SESSION_TK, YAML_TK):
 
-    # Initialise Dictionaries
-    sync_log = []
-    sync_dict = {}
-
-    # Set Sync Status to False, unless otherwise overwritten.
-    sync_status = False
-
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC PROCESS STARTED...')
-
-
-    '''
-    DISCOVERY
-    '''
+    sync_log.append(YAML_TK['YAML_fqdn'] + ': DISCOVERY Module Initialised..')
+    sync_discvry_dict = {}
+    sync_discvry_status = False
 
     # Call Node Discovery module. Returns Node Version, Model and Netmiko Driver information
     discvry_status, discvry_log, discvry_dict = discvry(SESSION_TK, YAML_TK)
@@ -41,49 +39,88 @@ def sync(SESSION_TK, YAML_TK):
 
     # If discovery was successful...
     if discvry_status == True:
-        try:
-            if SESSION_TK['ARG_debug'] == True:
-                print('\n**DEBUG (_network_borg_sync.py) : ' +YAML_TK['YAML_fqdn'] + ' Discovery Dict:')
-                print('DISCOVERED:       ' + str(discvry_status))
-                print('MODEL:            ' + discvry_dict['MODEL'])
-                print('VERSION:          ' + discvry_dict['VERSION'])
-                print('GROUP:            ' + discvry_dict['GROUP'])
+        if SESSION_TK['ARG_debug'] == True:
+            print('\n**DEBUG (_network_borg_sync.py) : ' + YAML_TK['YAML_fqdn'] + ' Discovery Dict:')
+            print('DISCOVERED:       ' + str(discvry_status))
+            print('MODEL:            ' + discvry_dict['MODEL'])
+            print('VERSION:          ' + discvry_dict['VERSION'])
+            print('GROUP:            ' + discvry_dict['GROUP'])
 
-            else:
-                pass
+        sync_discvry_status = True
+        sync_discvry_dict = discvry_dict
+
+    else:
+        sync_discvry_status = False
+
+    return sync_discvry_status, sync_discvry_dict
 
 
-            '''
-            GETSET
-            '''
+# GETSET
+# REQ: SESSION_TK, YAML_TK, sync_discvry_dict)
+# RTN: sync_getset_status, sync_getset_template, sync_getset_payload
+def sync_getset(SESSION_TK, YAML_TK, sync_discvry_dict):
 
-            try:
-                getset_status, getset_log, getset_template, getset_payload = getset(SESSION_TK, YAML_TK, discvry_dict)
+    sync_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Module Initialised...')
+    sync_getset_template = {}
+    sync_getset_payload = {}
+    sync_getset_status = False
 
-                for line in getset_log:
-                    sync_log.append(line)
+    getset_status, getset_log, getset_template, getset_payload = getset(SESSION_TK, YAML_TK, sync_discvry_dict)
 
-                if SESSION_TK['ARG_debug'] == True:
-                    print('\n**DEBUG (_network_borg_sync.py) : Template (J2) Set:')
-                    print(getset_template)
-                    print('\n**DEBUG (_network_borg_sync.py) : Payload Set:')
-                    print(getset_payload)
+    for line in getset_log: # Append log to Global Log
+        sync_log.append(line)
 
-            except Exception as e:
-                sync_log.append(YAML_TK['YAML_fqdn'] + ': > Failed to GETSET's - ' + str(e))\
+    if getset_status == True:
+        sync_getset_status = True
+        sync_getset_template = getset_template
+        sync_getset_payload = getset_payload
 
-            # Even though the sync could have failed, all components completed so
-            # mark status as True
+    else:
+        sync_getset_status = False
+
+    if SESSION_TK['ARG_debug'] == True:
+        print('\n**DEBUG (_network_borg_sync.py) : GETSET Module Template Set Returned:')
+        print(sync_getset_template)
+        print('\n**DEBUG (_network_borg_sync.py) : GETSET Module Payload Set Returned:')
+        print(sync_getset_payload)
+
+    return sync_getset_status, sync_getset_template, sync_getset_payload
+
+'''
+SYNC
+'''
+def sync(SESSION_TK, YAML_TK):
+
+    sync_status = False
+
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC INITIALISED...')
+
+    '''
+    CONDITIONAL WORKFLOW...
+    '''
+
+    # DISCOVERY
+    # REQ: SESSION_TK, YAML_TK
+    # RTN: sync_discvry_status, sync_discvry_dict
+    sync_discvry_status, sync_discvry_dict = sync_discvry(SESSION_TK, YAML_TK)
+
+    if sync_discvry_status == True:
+        sync_log.append(YAML_TK['YAML_fqdn'] + ': DISCVRY Successful')
+        # GETSET
+        # REQ: SESSION_TK, YAML_TK, sync_discvry_dict)
+        # RTN: sync_getset_status, sync_getset_template, sync_getset_payload
+        sync_getset_status, sync_getset_template, sync_getset_payload = sync_getset(SESSION_TK, YAML_TK, sync_discvry_dict)
+
+        if sync_getset_status == True:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Successful')
             sync_status = True
-            sync_log.append(YAML_TK['YAML_fqdn'] + ': SYNC PROCESS COMPLETED :-)')
 
-        except Exception as e:
-            sync_log.append(YAML_TK['YAML_fqdn'] + ': SYNC PROCESS ERROR - ' + str(e))
+        else:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Failure')
             sync_status = False
 
-    else: # Discovery Status = False
-        sync_log.append(YAML_TK['YAML_fqdn'] + ': SYNC PROCESS ERROR - Discovery Failed!')
+    else: # sync_discvry_status == False:
+        sync_log.append(YAML_TK['YAML_fqdn'] + ': DISCVRY Failure!')
         sync_status = False
-
-
+        
     return sync_status, sync_log

@@ -10,16 +10,16 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
+# Initialise Global Sync Log List
+sync_log = []
 
+'''
+SYNC
+'''
 def sync(SESSION_TK, YAML_TK):
 
-    # Initialise Dictionaries
-    sync_log = []
-    sync_dict = {}
-
-    # Set Sync Status to False, unless otherwise overwritten.
     sync_status = False
 
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC PROCESS STARTED...')
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC INITIALISED...')
 
     return sync_status, sync_log

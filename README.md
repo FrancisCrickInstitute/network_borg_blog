@@ -130,3 +130,10 @@ Publicly Available Network Scripts
 - Corrected logic in _network_borg_sync.py to break if status returned by _network_borg_nxapi.py or _network_borg_netmko.py is False.
 - Corrected missing logging in _network_borg_netmko.py
 - Address workflow through _network_borg_sync.py module. Now calls individual functions in a structured manner and only proceeds if status of previous workflow function is True (OK)
+
+## Version 0.9.3
+- Updated _network_borg_sync.py conditional workflow login to now be within a while loop.
+- Updated _network_borg_diffgen.py to align with new variable names.
+
+## Version 0.9.4
+- Added requirements.txt 

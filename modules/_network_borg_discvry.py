@@ -21,7 +21,7 @@ def discvry(SESSION_TK, YAML_TK):
     discvry_log = []
     discvry_dict = {}
 
-    discvry_log.append(YAML_TK['YAML_fqdn'] + ': NAPALM DISCOVERY STARTED...')
+    discvry_log.append(YAML_TK['YAML_fqdn'] + ': * NAPALM Discovery Started...')
     discvry_status = False # Unless otherwise overwritten
 
     driver = get_network_driver(YAML_TK['YAML_driver'])

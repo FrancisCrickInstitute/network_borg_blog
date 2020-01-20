@@ -12,8 +12,7 @@ __copyright__   = 'None. Enjoy :-)'
 def j2rdr(SESSION_TK, YAML_TK, item, object):
 
     if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (_network_borg_j2rdr.py) : J2RDR Module Variables Recieved:')
-        print('ITEM:   ' + str(item))
+        print('\n**DEBUG (_network_borg_j2rdr.py) : [' + item + '] J2RDR Module Variables Recieved:')
         print('OBJECT: ' + str(object))
 
     # Initialise Dictionaries
@@ -73,7 +72,10 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
 
                     j2dict_status = True
 
-                except: # No VARS passed so just leave render_dict {} empty
+                except:
+                    j2dict_status = False
+
+                finally: # No VARS passed so just leave render_dict {} empty
                     j2dict_status = True
 
                 # print(str(item) + ' : ' + str(render_dict))
@@ -89,6 +91,10 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
                 if j2dict_status == True:
                     try: # Render J2 File
 
+                        if SESSION_TK['ARG_debug'] == True:
+                            print('\n**DEBUG (_network_borg_sync.py) : [' + item + '] J2 Variables Dict:')
+                            print(render_dict)
+
                         jinja_rendered = j.render(render_dict)
 
                         # Use splitlines render line endings (e.g. /n) as actual line endings
@@ -98,7 +104,7 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
                         j2rdr_list = list(filter(None, j2rdr_list))
 
                         if SESSION_TK['ARG_debug'] == True:
-                            print('\n**DEBUG (_network_borg_sync.py) : J2 Rendered List:')
+                            print('\n**DEBUG (_network_borg_sync.py) : [' + item + '] J2 Filtered List:')
                             print(j2rdr_list)
 
                         j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Successful ' + u'\u2714')

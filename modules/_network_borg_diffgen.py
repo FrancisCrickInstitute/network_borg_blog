@@ -22,33 +22,50 @@ def enquiry(list):
         return 0
 
 # Referenced module function
-def diffgen(SESSION_TK, YAML_TK, response_list, template_list, item):
+def diffgen(SESSION_TK, YAML_TK, sync_getcfg_list, sync_j2rdr_list, item):
+
+    diffgen_status = False
+
+    if SESSION_TK['ARG_debug'] == True:
+        print('\n**DEBUG (_network_borg_diffgen.py) : DIFFGEN Dictionaries Recieved:')
+        print('J2RDR DICT:  ' + str(sync_j2rdr_list))
+        print('GETCFG DICT: ' + str(sync_getcfg_list))
 
     diffgen_log = []
     diffgen_add = []
     diffgen_del = []
 
     try:
+        diffgen_add_status = False
+        diffgen_del_status = False
+
         # Generate a DIFF list [] of lines to be Added
-        diffgen_add = diff(template_list, response_list)
+        diffgen_add = diff(sync_j2rdr_list, sync_getcfg_list)
 
         if enquiry(diffgen_add):
             diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] + Add False')
         else:
             diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] + Add True')
+            diffgen_add_status = True
 
         # Generate a DIFF list [] of lines to be Deleted
-        diffgen_del = diff(response_list, template_list)
+        diffgen_del = diff(sync_getcfg_list, sync_j2rdr_list)
 
         if enquiry(diffgen_del):
             diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] - Delete False')
         else:
             diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] - Delete True')
+            diffgen_del_status = True
 
-        diffgen_status = True
+        if (diffgen_add_status == True) or (diffgen_del_status == True):
+            diffgen_status = True
+
+        else:
+            diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No Difference Found')
+            diffgen_status = True
 
     except Exception as e:
-        diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Difference Failure ' + e)
+        diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Difference Failure ' + str(e))
         diffgen_status = False
 
     return (diffgen_status, diffgen_log, diffgen_add, diffgen_del)
