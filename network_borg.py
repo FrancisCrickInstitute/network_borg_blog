@@ -100,8 +100,11 @@ def main():
     yaml_status, yaml_log, yaml_dict = genyml(SESSION_TK['ARG_yaml'])
 
     if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (network_borg.py) : YAML DICT')
+        print(bcolors.OKGREEN)
+        print(bcolors.BOLD)
+        print('**DEBUG (network_borg.py) : YAML DICT')
         print(yaml_dict)
+        print(bcolors.ENDC)
 
     # Append all log entries to master_log
     for line in yaml_log:
@@ -135,13 +138,15 @@ def main():
         YAML_TK['YAML_env']  = yaml_host[1]['ENV']
 
         if SESSION_TK['ARG_debug'] == True:
-            print('\n**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' YAML Results:')
+            print(bcolors.OKBLUE)
+            print(bcolors.BOLD)
+            print('**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' YAML Results:')
             print('FQDN:             ' + YAML_TK['YAML_fqdn'])
             print('DRIVER:           ' + YAML_TK['YAML_driver'])
             print('LOC:              ' + YAML_TK['YAML_loc'])
             print('DOMAIN:           ' + YAML_TK['YAML_domain'])
             print('ENVIRO:           ' + YAML_TK['YAML_env'])
-
+            print(bcolors.ENDC)
 
         '''
         SYNC

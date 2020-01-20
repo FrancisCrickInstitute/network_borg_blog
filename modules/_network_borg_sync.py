@@ -23,21 +23,6 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
-# Initialise sync_log Globally. See NOTE#1 in main sync function!
-sync_log = []
-
-# Colour class. Used to format screen output.
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    RED = '\33[91m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
 # DISCOVERY
 # REQ: SESSION_TK, YAML_TK
 # RTN: sync_discvry_status, sync_discvry_dict
@@ -112,7 +97,7 @@ def sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template):
 
     sync_j2rdr_log = []
 
-    sync_log.append(YAML_TK['YAML_fqdn'] + ': > J2RDR Module Initialised...')
+    sync_j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': > J2RDR Module Initialised...')
 
     # Initialise a j2rdr_dict {}. This will store the item as the key value
     # and the j2rdr_list as an object.
@@ -204,7 +189,7 @@ def sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload):
 
     elif YAML_TK['YAML_driver'] == 'nxos_ssh': # Cisco NXOS
         nxapi_mode = 'get'
-        sync_log.append(YAML_TK['YAML_fqdn'] + ': * NX-OS NXAPI Method')
+        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ': * NX-OS NXAPI Method')
 
         for item, objects in sync_getset_payload.items():
             for object in objects:
@@ -301,7 +286,7 @@ def sync_diffgen(SESSION_TK, YAML_TK, sync_getcfg_dict, sync_j2rdr_dict):
 # RTN: sync_push_status
 def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
 
-    sync_diffgen_log = []
+    sync_push_log = []
 
     sync_push_status = False
 
@@ -329,53 +314,57 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
                     if netmko_status == True:
                         sync_push_status = True
 
-            sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': PUSH Module Successful')
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': * PUSH Commit Successful')
 
         else: # SESSION_TK['ARG_commit'] == False:
-            sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (IOS NETMIKO) Initialised. Non-Commit Mode !! ...')
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (IOS NETMIKO) Initialised. Non-Commit Mode !! ...')
 
             for item, objects in sync_diffgen_dict.items():
                 for object in objects:
                     sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
+
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': * PUSH Proposal Generated')
 
         sync_push_status = True
 
     elif YAML_TK['YAML_driver'] == 'nxos_ssh': # Cisco NXOS
 
         if SESSION_TK['ARG_commit'] == True:
-            sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (NX-OS NXAPI) Initialised. Commit Mode && ...')
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (NX-OS NXAPI) Initialised. Commit Mode && ...')
 
             nxapi_mode = 'set'
 
             for item, objects in sync_diffgen_dict.items():
 
                 if not objects:
-                     sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No DIFF Found')
+                     sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No DIFF Found')
 
                 else:
-                     sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] DIFF Found...')
+                     sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] DIFF Found...')
 
                 for object in objects:
                     nxapi_status, nxapi_log, nxapi_dict = nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object)
 
                     for line in nxapi_log:
-                        sync_diffgen_log.append(line)
+                        sync_push_log.append(line)
 
                     if nxapi_status == True:
                         sync_push_status = True
 
-            sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': PUSH Module Successful')
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': * PUSH Commit Successful')
 
         else: # SESSION_TK['ARG_commit'] == False:
-            sync_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (NX-OS NXAPI) Initialised. Non-Commit Mode !! ...')
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (NX-OS NXAPI) Initialised. Non-Commit Mode !! ...')
 
             for item, objects in sync_diffgen_dict.items():
                 for object in objects:
-                    sync_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
+                    sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
+
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': * PUSH Proposal Generated')
 
         sync_push_status = True
 
-    return sync_push_status, sync_diffgen_log
+    return sync_push_status, sync_push_log
 
 '''
 SYNC
@@ -388,12 +377,6 @@ def sync(SESSION_TK, YAML_TK):
     sync_loop = True
 
     sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC Initialised...')
-
-    if SESSION_TK['ARG_debug'] == True:
-        print(bcolors.OKBLUE)
-        print(bcolors.BOLD)
-        print('\n**DEBUG (_network_borg_sync.py) : ### ' + YAML_TK['YAML_fqdn'] + ' DEBUG OUTPUT ###')
-        print(bcolors.ENDC)
 
     '''
     CONDITIONAL WORKFLOW...

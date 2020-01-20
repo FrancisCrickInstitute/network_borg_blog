@@ -73,7 +73,7 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                 # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
                 # Parse through garbx to clean msg blob
                 nxapi_list = garbx(get_response)
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Successful ' + u'\u2714')
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Successful')
                 nxapi_status = True
 
             elif 'error' in str(response): # 'error' implies BAD.
@@ -133,7 +133,7 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
 
                 if 'result' in str(set_response):
                     # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Successful "' + str(object) + '" ' + '\u2714')
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Successful "' + str(object) + '"')
                     nxapi_status = True
 
                 elif 'error' in str(set_response):

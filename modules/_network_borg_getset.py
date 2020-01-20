@@ -111,18 +111,18 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
             try:
                 # TEMPLATE SET
                 template_set = {
-                    'USER': # Use USER with caution!!! Don't bite off the hand which feeds you.
-                        [
-                            {
-                            'TEMPLATE': 'template_n5k_dev_user.j2',
-                            'VARS':
-                                [
-                                    {
-                                    'ENAB_PW': SESSION_TK['ENV_enab_pw_dev'] #System Enviro Var
-                                    }
-                                ]
-                            }
-                        ],
+                    #'USER': # Use USER with caution!!! Don't bite off the hand which feeds you.
+                    #    [
+                    #        {
+                    #        'TEMPLATE': 'template_n5k_dev_user.j2',
+                    #        'VARS':
+                    #            [
+                    #                {
+                    #                'ENAB_PW': SESSION_TK['ENV_enab_pw_dev'] #System Enviro Var
+                    #                }
+                    #            ]
+                    #        }
+                    #    ],
                     'SNMP':
                         [
                             {
@@ -159,12 +159,12 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
 
                 # PAYLOAD SET
                 payload_set = {
-                    'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
-                        [
-                            {
-                            'CMD': 'show run security'
-                            }
-                        ],
+                    #'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
+                    #    [
+                    #        {
+                    #        'CMD': 'show run security'
+                    #        }
+                    #    ],
                     'SNMP':
                         [
                             {
