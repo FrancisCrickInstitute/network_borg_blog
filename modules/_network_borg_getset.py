@@ -15,7 +15,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
 
     if SESSION_TK['ARG_debug'] == True:
         print('\n**DEBUG (_network_borg_getset.py) : GETSET Module Tokens Received:')
-        print('DISCVRY_DICT = VENDOR:' + discvry_dict['VENDOR'] + ' VERSION:' + discvry_dict['VERSION'] + ' MODEL:' + discvry_dict['MODEL'] + ' GROUP:' + discvry_dict['GROUP'])
+        print('DISCVRY_DICT = VENDOR: ' + discvry_dict['VENDOR'] + ' VERSION: ' + discvry_dict['VERSION'] + ' MODEL: ' + discvry_dict['MODEL'] + ' GROUP:' + discvry_dict['GROUP'])
         print('SESSION_TK = ' + str(SESSION_TK))
         print('YAML_TK = ' + str(YAML_TK))
 

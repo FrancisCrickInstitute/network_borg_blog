@@ -321,7 +321,7 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
 
             for item, objects in sync_diffgen_dict.items():
                 for object in objects:
-                    sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
+                    sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Config Payload !! : "' + str(object) + '"')
 
             sync_push_log.append(YAML_TK['YAML_fqdn'] + ': * PUSH Proposal Generated')
 
@@ -398,6 +398,9 @@ def sync(SESSION_TK, YAML_TK):
             # REQ: SESSION_TK, YAML_TK, sync_discvry_dict)
             # RTN: sync_getset_status, sync_getset_template, sync_getset_payload
             sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload = sync_getset(SESSION_TK, YAML_TK, sync_discvry_dict)
+
+            for line in sync_getset_log:
+                sync_log.append(line)
 
             if sync_getset_status == True:
                 sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
