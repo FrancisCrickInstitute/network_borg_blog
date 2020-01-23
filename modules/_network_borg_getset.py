@@ -29,7 +29,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     #'USER': # Use User with caution!!! Don't bite off the hand which feeds you.
                     #    [
                     #        {
-                    #        'TEMPLATE': 'template_n7k_dev_user.j2',
+                    #        'TEMPLATE': 'template_dev_n7k_user.j2',
                     #        'VARS':
                     #            [
                     #                {
@@ -41,7 +41,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_n7k_dev_snmp.j2',
+                            'TEMPLATE': 'template_dev_n7k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -55,7 +55,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_n7k_dev_ntp.j2',
+                            'TEMPLATE': 'template_dev_n7k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -67,7 +67,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_n7k_dev_aaa.j2',
+                            'TEMPLATE': 'template_dev_n7k_aaa.j2',
                             }
                         ]
                     }
@@ -114,7 +114,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     #'USER': # Use USER with caution!!! Don't bite off the hand which feeds you.
                     #    [
                     #        {
-                    #        'TEMPLATE': 'template_n5k_dev_user.j2',
+                    #        'TEMPLATE': 'template_dev_n5k_user.j2',
                     #        'VARS':
                     #            [
                     #                {
@@ -126,7 +126,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_n5k_dev_snmp.j2',
+                            'TEMPLATE': 'template_dev_n5k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -140,7 +140,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_n5k_dev_ntp.j2',
+                            'TEMPLATE': 'template_dev_n5k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -152,7 +152,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_n5k_dev_aaa.j2',
+                            'TEMPLATE': 'template_dev_n5k_aaa.j2',
                             }
                         ]
                     }
@@ -199,7 +199,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     #'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
                     #    [
                     #        {
-                    #        'TEMPLATE': 'template_c3k_dev_user.j2',
+                    #        'TEMPLATE': 'template_dev_c3k_user.j2',
                     #        'VARS':
                     #            [
                     #                {
@@ -211,7 +211,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_c3k_dev_snmp.j2',
+                            'TEMPLATE': 'template_dev_c3k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -225,7 +225,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_c3k_dev_ntp.j2',
+                            'TEMPLATE': 'template_dev_c3k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -237,7 +237,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_c3k_dev_aaa.j2',
+                            'TEMPLATE': 'template_dev_c3k_aaa.j2',
                             }
                         ]
                     }
@@ -303,7 +303,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_n7k_snmp.j2',
+                            'TEMPLATE': 'template_prd_n7k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -317,7 +317,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_n7k_ntp.j2',
+                            'TEMPLATE': 'template_prd_n7k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -329,7 +329,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_n7k_aaa.j2',
+                            'TEMPLATE': 'template_prd_n7k_aaa.j2',
                             }
                         ]
                     }
@@ -376,7 +376,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'USER': # Use User with caution!!! Don't bite off the hand which feeds you.
                         [
                             {
-                            'TEMPLATE': 'template_n6k_user.j2',
+                            'TEMPLATE': 'template_prd_n6k_user.j2',
                             'VARS':
                                 [
                                     {
@@ -388,7 +388,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_n6k_snmp.j2',
+                            'TEMPLATE': 'template_prd_n6k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -402,7 +402,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_n6k_ntp.j2',
+                            'TEMPLATE': 'template_prd_n6k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -414,7 +414,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_n6k_aaa.j2',
+                            'TEMPLATE': 'template_prd_n6k_aaa.j2',
                             }
                         ]
                     }
@@ -461,7 +461,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_n5k_snmp.j2',
+                            'TEMPLATE': 'template_prd_n5k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -487,7 +487,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_n5k_aaa.j2',
+                            'TEMPLATE': 'template_prd_n5k_aaa.j2',
                             }
                         ]
                     }
@@ -531,10 +531,22 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
             try:
                 # TEMPLATE SET
                 template_set = {
+                    'USER': # Use User with caution!!! Don't bite off the hand which feeds you.
+                        [
+                            {
+                            'TEMPLATE': 'template_prd_c3k_user.j2',
+                            'VARS':
+                                [
+                                    {
+                                    'ENAB_PW': SESSION_TK['ENV_enab_pw_prd']
+                                    }
+                                ]
+                            }
+                        ],
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_c3k_snmp.j2',
+                            'TEMPLATE': 'template_prd_c3k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -548,7 +560,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_c3k_ntp.j2',
+                            'TEMPLATE': 'template_prd_c3k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -560,17 +572,23 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_c3k_aaa.j2',
+                            'TEMPLATE': 'template_prd_c3k_aaa.j2',
                             }
                         ]
                     }
 
                 # PAYLOAD SET
                 payload_set = {
+                    'USER': # Use USER with caution!!! on't bite off the hand which feeds you.
+                        [
+                            {
+                            'CMD': 'show run | inc username'
+                            }
+                        ],
                     'SNMP':
                         [
                             {
-                            'CMD': 'show rum | inc snmp'
+                            'CMD': 'show run | inc snmp'
                             }
                         ],
                     'NTP':
@@ -602,7 +620,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_c4ks8_snmp.j2',
+                            'TEMPLATE': 'template_prd_c4ks8_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -616,7 +634,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_c4ks8_ntp.j2',
+                            'TEMPLATE': 'template_prd_c4ks8_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -628,7 +646,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_c4ks8_aaa.j2',
+                            'TEMPLATE': 'template_prd_c4ks8_aaa.j2',
                             }
                         ]
                     }
@@ -670,7 +688,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_c4kx_snmp.j2',
+                            'TEMPLATE': 'template_prd_c4kx_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -684,7 +702,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_c4kx_ntp.j2',
+                            'TEMPLATE': 'template_prd_c4kx_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -696,7 +714,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_c4kx_aaa.j2',
+                            'TEMPLATE': 'template_prd_c4kx_aaa.j2',
                             }
                         ]
                     }
@@ -737,7 +755,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                            'TEMPLATE': 'template_c6k_snmp.j2',
+                            'TEMPLATE': 'template_prd_c6k_snmp.j2',
                             'VARS':
                                 [
                                     {
@@ -751,7 +769,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'NTP':
                         [
                             {
-                            'TEMPLATE': 'template_c6k_ntp.j2',
+                            'TEMPLATE': 'template_prd_c6k_ntp.j2',
                             'VARS':
                                 [
                                     {
@@ -763,7 +781,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'AAA':
                         [
                             {
-                            'TEMPLATE': 'template_c6k_aaa.j2',
+                            'TEMPLATE': 'template_prd_c6k_aaa.j2',
                             }
                         ]
                     }

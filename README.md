@@ -144,4 +144,6 @@ Publicly Available Network Scripts
 
 ## Version 0.9.6
 - Added function to output master_log to file.
-- Corrected error in _network_borg_sync sync_getcfg function. 
+- Corrected error in _network_borg_sync sync_getcfg function.
+- Updated _network_borg_getset.py to support Production C3K.
+- Updated _network_borg_getset.py to reflect new template file naming convention.
