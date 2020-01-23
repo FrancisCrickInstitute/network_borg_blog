@@ -18,15 +18,14 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
-# Initialise Global Sync Log List
-sync_log = []
-
 # DISCOVERY
 # REQ: SESSION_TK, YAML_TK
 # RTN: sync_discvry_status, sync_discvry_dict
 def sync_discvry(SESSION_TK, YAML_TK):
 
-    sync_log.append(YAML_TK['YAML_fqdn'] + ': DISCOVERY Module Initialised..')
+    sync_discvry_log = []
+
+    sync_discvry_log.append(YAML_TK['YAML_fqdn'] + ': > DISCVRY Module Initialised..')
     sync_discvry_dict = {}
     sync_discvry_status = False
 
@@ -34,7 +33,7 @@ def sync_discvry(SESSION_TK, YAML_TK):
     discvry_status, discvry_log, discvry_dict = discvry(SESSION_TK, YAML_TK)
 
     for line in discvry_log:
-        sync_log.append(line)
+        sync_discvry_log.append(line)
 
     # If discovery was successful...
     if discvry_status == True:
@@ -44,7 +43,6 @@ def sync_discvry(SESSION_TK, YAML_TK):
             print('MODEL:            ' + discvry_dict['MODEL'])
             print('VERSION:          ' + discvry_dict['VERSION'])
             print('GROUP:            ' + discvry_dict['GROUP'])
-            print('INT:              ' + str(discvry_dict['INT']))
 
         sync_discvry_status = True
         sync_discvry_dict = discvry_dict
@@ -52,26 +50,40 @@ def sync_discvry(SESSION_TK, YAML_TK):
     else:
         sync_discvry_status = False
 
-    return sync_discvry_status, sync_discvry_dict
+    return sync_discvry_status, sync_discvry_log, sync_discvry_dict
 
 '''
 SYNC
 '''
 def sync(SESSION_TK, YAML_TK):
 
-    sync_status = False
+    sync_log = [] # Zeroise sync_log per-pass
 
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC INITIALISED...')
+    sync_status = False
+    sync_loop = True
+
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC Initialised...')
 
     '''
     CONDITIONAL WORKFLOW...
     '''
 
-    # DISCOVERY
-    # REQ: SESSION_TK, YAML_TK
-    # RTN: sync_discvry_status, sync_discvry_dict
-    sync_discvry_status, sync_discvry_dict = sync_discvry(SESSION_TK, YAML_TK)
+    while sync_loop == True:
+        # DISCOVERY
+        # REQ: SESSION_TK, YAML_TK
+        # RTN: sync_discvry_status, sync_discvry_dict
+        sync_discvry_status, sync_discvry_log, sync_discvry_dict = sync_discvry(SESSION_TK, YAML_TK)
 
-    sync_status = sync_discvry_status
+        for line in sync_discvry_log:
+            sync_log.append(line)
+
+        if sync_discvry_status == True:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Successful ' + u'\u2714')
+
+        else: # sync_discvry_status == False:
+             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Failure ' + u'\u2714')
+             sync_loop = False
+
+        sync_loop = False # Catch all.
 
     return sync_status, sync_log

@@ -147,3 +147,6 @@ Publicly Available Network Scripts
 - Corrected error in _network_borg_sync sync_getcfg function.
 - Updated _network_borg_getset.py to support Production C3K.
 - Updated _network_borg_getset.py to reflect new template file naming convention.
+
+## Version 0.9.7
+- Aligned chapter modules with Blog. 

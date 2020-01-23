@@ -3,7 +3,7 @@
 # Python3 Network Borg (Resistance is futile)
 #
 # REQUIREMENTS:
-# python3 -m pip install nornir. Should cover all the bases.
+# python3 -m pip install -r requirements.txt
 #
 # USAGE:
 # python3 {file}.py -y {YAML_GROUP/HOST}
@@ -11,6 +11,7 @@
 from argparse import ArgumentParser # Required for Command Line Argument parsing
 import datetime # Required for Start/ End time
 import sys # Required for Python version check
+import os # Required for writing master_log to file.
 
 # Import modules from '/modules' sub-folder within script directory.
 # Folder name is significant to Python. '__init__.py' file required in Parent and
@@ -26,23 +27,34 @@ if (sys.version_info < (3, 6)):
 # Master Log List []
 master_log = []
 
+# Colour class. Used to format screen output.
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    RED = '\33[91m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    CEND      = '\33[0m'
+    CBOLD     = '\33[1m'
+    CITALIC   = '\33[3m'
+    CURL      = '\33[4m'
+    CBLINK    = '\33[5m'
+    CBLINK2   = '\33[6m'
+    CSELECTED = '\33[7m'
 
+    CWHITETXTREDBG = '\033[1;37;41m' # White Text, Red Background
+    CWHITETXTBLUDBG = '\033[1;37;44m' # White Text, Blue Background
+    CWHITETXTYELLOWBK = '\033[1;37;43m' # White Text, Yellow Background
+    CWHITETXTCYANBK = '\033[1;37;46m' # White Text, Yellow Background
+
+# Needed for posting to Slack
+#with open("../network_config/server.json", "rt") as server_f:
+#    credentials = json.load(server_f)
+#OAUTH = credentials["OAUTH_TOKEN_PROD"]
+#SLACKCHANNEL = credentials["CHANNEL"]
+#POST = credentials["POST"]
+#client = slack.WebClient(token=OAUTH)
 
 def main():
 
     # LOG Script Start Date/ Time
     start_time = datetime.datetime.now()
-    master_log.append('### START ### : ' + str(start_time) + '\n')
+    master_log.append('\n### START ### : ' + str(start_time) + '\n')
 
 
     '''
@@ -89,6 +101,7 @@ def main():
 
     SESSION_TK = args(cli_args)
 
+    master_log.append('Script Executed By: ' + str(SESSION_TK['ENV_user_un']) + '\n')
 
     '''
     YAML: Get List of Hosts
@@ -104,6 +117,12 @@ def main():
     # Append all log entries to master_log
     for line in yaml_log:
         master_log.append(line)
+
+    print(bcolors.CWHITETXTBLUDBG)
+    print('\nWORKING ON HOST(S):\n')
+    for item, object in yaml_dict.items():
+        print('* ' + item)
+    print(bcolors.CEND)
 
     # For yaml_host in YAML Dict, process...
     for yaml_host in yaml_dict.items():
@@ -127,38 +146,55 @@ def main():
 
         # Add values to the YAML_TK (Token)
         YAML_TK['YAML_fqdn'] = yaml_host[0]
-        YAML_TK['YAML_driver']  = yaml_host[1]['DRIVER'] # Required by NetMiko
+        YAML_TK['YAML_driver']  = yaml_host[1]['DRIVER'] # Required by NAPALM
         YAML_TK['YAML_loc']  = yaml_host[1]['LOC']
         YAML_TK['YAML_domain']  = yaml_host[1]['DOMAIN']
         YAML_TK['YAML_env']  = yaml_host[1]['ENV']
 
         if SESSION_TK['ARG_debug'] == True:
-            print('\n**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' YAML Results:')
+            print(bcolors.CWHITETXTCYANBK)
+            print('\n**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' Node Information:')
             print('FQDN:             ' + YAML_TK['YAML_fqdn'])
             print('DRIVER:           ' + YAML_TK['YAML_driver'])
             print('LOC:              ' + YAML_TK['YAML_loc'])
             print('DOMAIN:           ' + YAML_TK['YAML_domain'])
             print('ENVIRO:           ' + YAML_TK['YAML_env'])
+            print(bcolors.CEND)
+
+        else:
+            print(bcolors.CWHITETXTCYANBK)
+            print('\nWorking On ' + YAML_TK['YAML_fqdn'] + '... Please Wait...')
+            print(bcolors.CEND)
 
     # LOG Script End Date/ Time
     end_time = datetime.datetime.now()
     master_log.append('\n### END ### : ' + str(end_time))
 
     diff_time = end_time - start_time
-    master_log.append('\n### ELAPSED ### : ' + str(diff_time))
+    master_log.append('\n### ELAPSED ### : ' + str(diff_time) + '\n')
 
-    # Print master_log
-    print(bcolors.RED)
-    print(bcolors.BOLD)
-    print('*********************************************************************')
-    print('**                             RESULTS                             **')
-    print('*********************************************************************')
-    print(bcolors.ENDC)
+    # PRINT master_log
+    print(bcolors.CWHITETXTREDBG)
+    print(bcolors.CBOLD)
+    print(' *** RESULTS *** ')
+    print(bcolors.CEND)
 
     for line in master_log:
         print(line)
 
-    print('\n')
+    # WRITE master_log to file
+    # Make a folder in script working directory to store results
+    logdir = '../LOGS/network_borg/'
+
+    try:
+        os.makedirs(logdir)
+    except FileExistsError:
+        pass # Folder exisits so nothing to do
+
+    f = open(logdir + str(start_time) + '.log', 'w')
+    for line in master_log:
+        f.write(line + '\n')
+    f.close()
 
 if __name__ == "__main__":
     main()

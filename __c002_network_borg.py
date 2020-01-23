@@ -25,23 +25,26 @@ if (sys.version_info < (3, 6)):
 # Master Log List []
 master_log = []
 
+# Colour class. Used to format screen output.
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    RED = '\33[91m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    CEND      = '\33[0m'
+    CBOLD     = '\33[1m'
+    CITALIC   = '\33[3m'
+    CURL      = '\33[4m'
+    CBLINK    = '\33[5m'
+    CBLINK2   = '\33[6m'
+    CSELECTED = '\33[7m'
 
+    CWHITETXTREDBG = '\033[1;37;41m' # White Text, Red Background
+    CWHITETXTBLUDBG = '\033[1;37;44m' # White Text, Blue Background
+    CWHITETXTYELLOWBK = '\033[1;37;43m' # White Text, Yellow Background
+    CWHITETXTCYANBK = '\033[1;37;46m' # White Text, Yellow Background
 
 def main():
 
     # LOG Script Start Date/ Time
     start_time = datetime.datetime.now()
-    master_log.append('### START ### : ' + str(start_time))
+    master_log.append('\n### START ### : ' + str(start_time))
 
 
     '''
@@ -88,6 +91,9 @@ def main():
 
     SESSION_TK = args(cli_args)
 
+    # Append SESSION_TK to master_log []
+    master_log.append(SESSION_TK)
+
     # LOG Script End Date/ Time
     end_time = datetime.datetime.now()
     master_log.append('\n### END ### : ' + str(end_time))
@@ -95,13 +101,11 @@ def main():
     diff_time = end_time - start_time
     master_log.append('\n### ELAPSED ### : ' + str(diff_time) + '\n')
 
-    # Print master_log
-    print(bcolors.RED)
-    print(bcolors.BOLD)
-    print('*********************************************************************')
-    print('**                             RESULTS                             **')
-    print('*********************************************************************')
-    print(bcolors.ENDC)
+    # PRINT master_log
+    print(bcolors.CWHITETXTREDBG)
+    print(bcolors.CBOLD)
+    print(' *** RESULTS *** ')
+    print(bcolors.CEND)
 
     for line in master_log:
         print(line)
