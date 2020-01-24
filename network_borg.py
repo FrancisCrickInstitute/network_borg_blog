@@ -40,8 +40,8 @@ class bcolors:
 
     CWHITETXTREDBG = '\033[1;37;41m' # White Text, Red Background
     CWHITETXTBLUDBG = '\033[1;37;44m' # White Text, Blue Background
-    CWHITETXTYELLOWBK = '\033[1;37;43m' # White Text, Yellow Background
-    CWHITETXTCYANBK = '\033[1;37;46m' # White Text, Yellow Background
+    CWHITETXTYELLOWBG = '\033[1;37;43m' # White Text, Yellow Background
+    CWHITETXTCYANBG = '\033[1;37;46m' # White Text, Cyan Background
 
 # Needed for posting to Slack
 #with open("../network_config/server.json", "rt") as server_f:
@@ -57,6 +57,10 @@ def main():
     start_time = datetime.datetime.now()
     master_log.append('\n### START ### : ' + str(start_time) + '\n')
 
+    # Use OS function to centralise output to Terminal
+    print(bcolors.CWHITETXTREDBG)
+    print('\n' + ('Network Borg Python3 Script Started @ ' + str(start_time)).center(os.get_terminal_size().columns))
+    print(bcolors.CEND)
 
     '''
     CLI ARGUMENTS
@@ -120,9 +124,9 @@ def main():
         master_log.append(line)
 
     print(bcolors.CWHITETXTBLUDBG)
-    print('\nWORKING ON HOST(S):\n')
+    print('\nYAML Host List:\n')
     for item, object in yaml_dict.items():
-        print('* ' + item)
+        print('- ' + item)
     print(bcolors.CEND)
 
     # For yaml_host in YAML Dict, process...
@@ -153,7 +157,7 @@ def main():
         YAML_TK['YAML_env']  = yaml_host[1]['ENV']
 
         if SESSION_TK['ARG_debug'] == True:
-            print(bcolors.CWHITETXTCYANBK)
+            print(bcolors.CWHITETXTCYANBG)
             print('\n**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' Node Information:')
             print('FQDN:             ' + YAML_TK['YAML_fqdn'])
             print('DRIVER:           ' + YAML_TK['YAML_driver'])
@@ -163,7 +167,7 @@ def main():
             print(bcolors.CEND)
 
         else:
-            print(bcolors.CWHITETXTCYANBK)
+            print(bcolors.CWHITETXTCYANBG)
             print('\nWorking On ' + YAML_TK['YAML_fqdn'] + '... Please Wait...')
             print(bcolors.CEND)
 
@@ -185,9 +189,13 @@ def main():
 
     # PRINT master_log
     print(bcolors.CWHITETXTREDBG)
-    print(bcolors.CBOLD)
-    print(' *** RESULTS *** ')
+    print('\n' + ('*** RESULTS ***').center(os.get_terminal_size().columns))
     print(bcolors.CEND)
+
+    #print(bcolors.CWHITETXTREDBG)
+    #print(bcolors.CBOLD)
+    #print(' *** RESULTS *** ')
+    #print(bcolors.CEND)
 
     for line in master_log:
         print(line)

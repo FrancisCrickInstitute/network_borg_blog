@@ -149,4 +149,7 @@ Publicly Available Network Scripts
 - Updated _network_borg_getset.py to reflect new template file naming convention.
 
 ## Version 0.9.7
-- Aligned chapter modules with Blog. 
+- Aligned chapter modules with Blog.
+
+## Version 0.9.7.1
+- Fixed typo in _network_borg_sync.py PUSH function. 

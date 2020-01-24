@@ -149,7 +149,7 @@ def args(cli_args):
 
     # Print SESSION_TK (Token)
     if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (network_borg_sync) : SESSION_TK (Token)')
+        print('\n**DEBUG (network_borg_args.py) : SESSION_TK (Token)')
         print('ARG YAML:         ' + SESSION_TK['ARG_yaml'])
         print('ARG Tech:         ' + str(SESSION_TK['ARG_tech']))
         print('ARG FTP:          ' + str(SESSION_TK['ARG_ftp']))

@@ -14,9 +14,6 @@ import json # Required for NXAPI JSON RPC
 from modules._network_borg_discvry import discvry
 from modules._network_borg_getset import getset
 from modules._network_borg_j2rdr import j2rdr
-from modules._network_borg_netmko import netmko
-from modules._network_borg_nxapi import nxapi
-from modules._network_borg_diffgen import diffgen
 
 # URLLIB3 package to diabled SSH warnings
 requests.packages.urllib3.disable_warnings(

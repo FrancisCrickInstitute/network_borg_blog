@@ -293,23 +293,23 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
     if YAML_TK['YAML_driver'] == 'ios': # Cisco IOS
 
         if SESSION_TK['ARG_commit'] == True:
-            sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (IOS NETMIKO) Initialised. Commit Mode && ...')
+            sync_push_log.append(YAML_TK['YAML_fqdn'] + ': > PUSH Module (IOS NETMIKO) Initialised. Commit Mode && ...')
 
             netmko_mode = 'set'
 
             for item, objects in sync_diffgen_dict.items():
 
                 if not objects:
-                    sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No DIFF Found')
+                    sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No DIFF Found')
 
                 else:
-                    sync_diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] DIFF Found...')
+                    sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] DIFF Found...')
 
                 for object in objects:
                     netmko_status, netmko_log, netmko_list = netmko (SESSION_TK, YAML_TK, netmko_mode, item, object)
 
                     for line in netmko_log:
-                        sync_diffgen_log.append(line)
+                        sync_push_log.append(line)
 
                     if netmko_status == True:
                         sync_push_status = True
