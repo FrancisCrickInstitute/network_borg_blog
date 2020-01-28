@@ -157,5 +157,5 @@ Publicly Available Network Scripts
 ## Version 0.9.7.2
 - Modified NetMiko connection handler in _network_borg_netmko.py to support fast_cli. Disabled but can be toggled on/ off.
 
-# Version 0.9.8
-- Updated copyright and author notice across all files. 
+## Version 0.9.8
+- Updated copyright and author notice across all files.
