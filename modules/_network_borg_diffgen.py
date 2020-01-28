@@ -27,7 +27,7 @@ def diffgen(SESSION_TK, YAML_TK, sync_getcfg_list, sync_j2rdr_list, item):
     diffgen_status = False
 
     if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (_network_borg_diffgen.py) : DIFFGEN Dictionaries Recieved:')
+        print('\n**DEBUG (_network_borg_diffgen.py) : [' + item +'] DIFFGEN Lists Recieved:')
         print('J2RDR DICT:  ' + str(sync_j2rdr_list))
         print('GETCFG DICT: ' + str(sync_getcfg_list))
 

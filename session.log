@@ -1,0 +1,17 @@
+
+
+
+BP-LB2M2-DEV-CSW-01#
+BP-LB2M2-DEV-CSW-01#terminal length 0
+BP-LB2M2-DEV-CSW-01#terminal width 511
+BP-LB2M2-DEV-CSW-01#
+BP-LB2M2-DEV-CSW-01#
+BP-LB2M2-DEV-CSW-01#show run | inc aaa
+aaa new-model
+aaa authentication login default local
+aaa authentication enable default enable
+aaa authorization console
+aaa authorization exec default local 
+aaa session-id common
+BP-LB2M2-DEV-CSW-01#
+BP-LB2M2-DEV-CSW-01#exit

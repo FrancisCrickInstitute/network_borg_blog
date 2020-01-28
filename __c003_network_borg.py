@@ -11,13 +11,12 @@
 from argparse import ArgumentParser # Required for Command Line Argument parsing
 import datetime # Required for Start/ End time
 import sys # Required for Python version check
+import os # Required for screen formatting
 
 # Import modules from '/modules' sub-folder within script directory.
 # Folder name is significant to Python. '__init__.py' file required in Parent and
 # sub-folder(s).
 from modules._network_borg_args import args
-from modules._network_borg_genyml import genyml
-from modules.__c330_network_borg_sync import sync
 
 # Detect Python version. Python Major=3, Minor=6 expected
 if (sys.version_info < (3, 6)):
@@ -27,24 +26,31 @@ if (sys.version_info < (3, 6)):
 # Master Log List []
 master_log = []
 
+# Colour class. Used to format screen output.
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    RED = '\33[91m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    CEND      = '\33[0m'
+    CBOLD     = '\33[1m'
+    CITALIC   = '\33[3m'
+    CURL      = '\33[4m'
+    CBLINK    = '\33[5m'
+    CBLINK2   = '\33[6m'
+    CSELECTED = '\33[7m'
 
+    CWHITETXTREDBG = '\033[1;37;41m' # White Text, Red Background
+    CWHITETXTBLUDBG = '\033[1;37;44m' # White Text, Blue Background
+    CWHITETXTYELLOWBK = '\033[1;37;43m' # White Text, Yellow Background
+    CWHITETXTCYANBK = '\033[1;37;46m' # White Text, Yellow Background
 
 def main():
 
     # LOG Script Start Date/ Time
     start_time = datetime.datetime.now()
-    master_log.append('### START ### : ' + str(start_time) + '\n')
+    master_log.append('\n### START ### : ' + str(start_time) + '\n')
 
+    # Use OS function to centralise output to Terminal
+    print(bcolors.CWHITETXTREDBG)
+    print('\n' + ('Network Borg Python3 Script Started @ ' + str(start_time)).center(os.get_terminal_size().columns))
+    print(bcolors.CEND)
 
     '''
     CLI ARGUMENTS
@@ -90,68 +96,8 @@ def main():
 
     SESSION_TK = args(cli_args)
 
-
-    '''
-    YAML: Get List of Hosts
-    '''
-
-    # Generate host_list from -y YAML command line argument
-    yaml_status, yaml_log, yaml_dict = genyml(SESSION_TK['ARG_yaml'])
-
-    if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (network_borg.py) : YAML DICT')
-        print(yaml_dict)
-
-    # Append all log entries to master_log
-    for line in yaml_log:
-        master_log.append(line)
-
-    # For yaml_host in YAML Dict, process...
-    for yaml_host in yaml_dict.items():
-
-        '''
-        YAML: Host
-        '''
-
-        # yaml_dict will look something like (structured for understanding)
-        # {'BP-L08DC-DEV-DSW-01.thecrick.org':
-        #   {'NAPALM DRIVER': 'nxos_ssh',
-        #    'LOC': 'Building X, Floor Y, Room Z, CAB A',
-        #    'DOMAIN': 'thecrick.org',
-        #    'ENV': 'Development'
-        #   }
-        # }
-        # YAML_fqdn is in the root dictionary [0]. All other values are in the
-        # nested dictionary [1]
-
-        YAML_TK = {} # Re-initialise YAML_TK for each pass of yaml_host
-
-        # Add values to the YAML_TK (Token)
-        YAML_TK['YAML_fqdn'] = yaml_host[0]
-        YAML_TK['YAML_driver']  = yaml_host[1]['DRIVER'] # Required by NetMiko
-        YAML_TK['YAML_loc']  = yaml_host[1]['LOC']
-        YAML_TK['YAML_domain']  = yaml_host[1]['DOMAIN']
-        YAML_TK['YAML_env']  = yaml_host[1]['ENV']
-
-        if SESSION_TK['ARG_debug'] == True:
-            print('\n**DEBUG (network_borg.py) : ' + YAML_TK['YAML_fqdn'] + ' YAML Results:')
-            print('FQDN:             ' + YAML_TK['YAML_fqdn'])
-            print('DRIVER:           ' + YAML_TK['YAML_driver'])
-            print('LOC:              ' + YAML_TK['YAML_loc'])
-            print('DOMAIN:           ' + YAML_TK['YAML_domain'])
-            print('ENVIRO:           ' + YAML_TK['YAML_env'])
-
-
-        '''
-        SYNC
-        '''
-
-        print('\n' + YAML_TK['YAML_fqdn'] + ': SYNC PROCESS STARTED...')
-
-        sync_status, sync_log = sync(SESSION_TK, YAML_TK)
-
-        for line in sync_log:
-            master_log.append(line)
+    # Append SESSION_TK to master_log []
+    master_log.append(SESSION_TK)
 
     # LOG Script End Date/ Time
     end_time = datetime.datetime.now()
@@ -160,16 +106,16 @@ def main():
     diff_time = end_time - start_time
     master_log.append('\n### ELAPSED ### : ' + str(diff_time) + '\n')
 
-    # Print master_log
-    print(bcolors.RED)
-    print(bcolors.BOLD)
-    print('*********************************************************************')
-    print('**                             RESULTS                             **')
-    print('*********************************************************************')
-    print(bcolors.ENDC)
+    # PRINT master_log
+    print(bcolors.CWHITETXTREDBG)
+    print(bcolors.CBOLD)
+    print(' *** RESULTS *** ')
+    print(bcolors.CEND)
 
     for line in master_log:
         print(line)
+
+    print('\n')
 
 if __name__ == "__main__":
     main()

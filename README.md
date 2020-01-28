@@ -152,4 +152,7 @@ Publicly Available Network Scripts
 - Aligned chapter modules with Blog.
 
 ## Version 0.9.7.1
-- Fixed typo in _network_borg_sync.py PUSH function. 
+- Fixed typo in _network_borg_sync.py PUSH function.
+
+## Version 0.9.7.2
+- Modified NetMiko connection handler in _network_borg_netmko.py to support fast_cli. Disabled but can be toggled on/ off.

@@ -185,4 +185,5 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
     else:
         nxapi_log.append(YAML_TK['YAML_fqdn'] + ': NXAPI Mode Invalid')
         nxapi_status = False
+
         return nxapi_status, nxapi_log, nxapi_list

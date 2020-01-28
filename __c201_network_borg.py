@@ -11,7 +11,7 @@
 from argparse import ArgumentParser # Required for Command Line Argument parsing
 import datetime # Required for Start/ End time
 import sys # Required for Python version check
-import os # Required for writing master_log to file.
+import os # Required for screen formatting & writing master_log to file.
 
 # Import modules from '/modules' sub-folder within script directory.
 # Folder name is significant to Python. '__init__.py' file required in Parent and
@@ -57,6 +57,10 @@ def main():
     start_time = datetime.datetime.now()
     master_log.append('\n### START ### : ' + str(start_time) + '\n')
 
+    # Use OS function to centralise output to Terminal
+    print(bcolors.CWHITETXTREDBG)
+    print('\n' + ('Network Borg Python3 Script Started @ ' + str(start_time)).center(os.get_terminal_size().columns))
+    print(bcolors.CEND)
 
     '''
     CLI ARGUMENTS
@@ -120,9 +124,9 @@ def main():
         master_log.append(line)
 
     print(bcolors.CWHITETXTBLUDBG)
-    print('\nWORKING ON HOST(S):\n')
+    print('\nYAML Host List:\n')
     for item, object in yaml_dict.items():
-        print('* ' + item)
+        print('- ' + item)
     print(bcolors.CEND)
 
     # For yaml_host in YAML Dict, process...

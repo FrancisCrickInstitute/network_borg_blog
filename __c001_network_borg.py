@@ -11,7 +11,7 @@
 
 from argparse import ArgumentParser # Required for Command Line Argument parsing
 import sys # Required to get Python version information
-import os # Required to create repo folder and FTP Password
+import os # Required for screen formatting
 import datetime # Required for Start/ End time
 import getpass # Required to prompt for username and password in SYSENV's not found.
 import base64 # Required for password obfuscation
@@ -45,12 +45,10 @@ def main():
     start_time = datetime.datetime.now()
     master_log.append('\n### START ### : ' + str(start_time) + '\n')
 
-    '''
-    SESSION TOKEN
-    '''
-
-    # Initialise a Session Token Dictionary {}
-    SESSION_TK = {}
+    # Use OS function to centralise output to Terminal
+    print(bcolors.CWHITETXTREDBG)
+    print('\n' + ('Network Borg Python3 Script Started @ ' + str(start_time)).center(os.get_terminal_size().columns))
+    print(bcolors.CEND)
 
     '''
     CLI ARGUMENTS
@@ -94,49 +92,40 @@ def main():
 
     args = parser.parse_args()
 
-    # Add Arguments to the SESSION_TK (Token)
-    SESSION_TK['ARG_yaml'] = args.yaml
-    SESSION_TK['ARG_tech'] = args.tech
-    SESSION_TK['ARG_ftp'] = args.ftp
-    SESSION_TK['ARG_clear'] = args.clear
-    SESSION_TK['ARG_version'] = args.version
-    SESSION_TK['ARG_debug'] = args.debug
-    SESSION_TK['ARG_commit'] = args.commit
+
 
     '''
     CREDENTIALS
     '''
 
-    # If Override -o not set, try to get credentials from CLI Arguments -u -p,
-    # Envirnmental Variables or finally GetPass. Add to SESSION_TK (Token)
     if args.override == False:
 
         # Username
         if args.username is not None:
-            SESSION_TK['ENV_user_un'] = args.username
+            ENV_user_un = args.username
         else: #is none
             try:
-                SESSION_TK['ENV_user_un'] = os.environ['PY_USER_UN']
+                ENV_user_un = os.environ['PY_USER_UN']
             except:
-                SESSION_TK['ENV_user_un'] = getpass.getpass('Your Username: ')
+                ENV_user_un = getpass.getpass('Your Username: ')
 
         # Password
         if args.password is not None:
-            SESSION_TK['ENV_user_pw'] = args.password
+            ENV_user_pw = args.password
         else: #is none
             try:
-                SESSION_TK['ENV_user_pw'] = os.environ['PY_USER_PW']
+                ENV_user_pw = os.environ['PY_USER_PW']
             except:
-                SESSION_TK['ENV_user_pw'] = getpass.getpass('Your Password: ')
+                ENV_user_pw = getpass.getpass('Your Password: ')
 
         # Validation
-        if ((SESSION_TK['ENV_user_un'] is None) or (SESSION_TK['ENV_user_pw'] is None)):
+        if ((ENV_user_un is None) or (ENV_user_pw is None)):
             print('ERROR: User Credentials Not Found!!!')
             sys.exit(0)
 
     else:
-        SESSION_TK['ENV_user_un'] = getpass.getpass('Your Username: ')
-        SESSION_TK['ENV_user_pw'] = getpass.getpass('Your Password: ')
+        ENV_user_un = getpass.getpass('Your Username: ')
+        ENV_user_pw = getpass.getpass('Your Password: ')
 
 
     '''
@@ -151,12 +140,12 @@ def main():
     # Reload Finder 'killall Finder'
     # Use 'env' to discover what is configured.
 
-    # FTP Environmental Variables. Add to SESSION_TK (Token) if found.
-    if SESSION_TK['ARG_tech'] == True and SESSION_TK['ARG_ftp'] == True:
+    # FTP Environmental Variables
+    if args.tech == True and args.ftp == True:
         try:
-            SESSION_TK['ENV_ftp_ip'] = os.environ['PY_FTP_IP']
-            SESSION_TK['ENV_ftp_un'] = os.environ['PY_FTP_UN']
-            SESSION_TK['ENV_ftp_pw'] = os.environ['PY_FTP_PW']
+            ENV_ftp_ip = os.environ['PY_FTP_IP']
+            ENV_ftp_un = os.environ['PY_FTP_UN']
+            ENV_ftp_pw = os.environ['PY_FTP_PW']
 
         except:
             print('\nWARNING: Technical Support and FTP Upload Flag set to True')
@@ -167,19 +156,19 @@ def main():
     else:
         pass
 
-    # SNMP Enviromental Variables. Add to SESSION_TK (Token) if found.
+    # SNMP Enviromental Variables
     try:
-        SESSION_TK['ENV_snmp_key'] = os.environ['PY_SNMP_KEY']
+        ENV_snmp_key = os.environ['PY_SNMP_KEY']
 
     except:
         print('\nWARNING: Required SNMP Key Environment Variable is missing')
         print('Script may not work as expected. See notes in network_borg.py')
         print('code at line 90\n')
 
-    # NTP Environmental Variables. Add to SESSION_TK (Token) if found.
+    # NTP
     try:
-        SESSION_TK['ENV_ntp_key'] = os.environ['PY_NTP_KEY']
-        SESSION_TK['ENV_ntp_md5'] = os.environ['PY_NTP_MD5']
+        ENV_ntp_key = os.environ['PY_NTP_KEY']
+        ENV_ntp_md5 = os.environ['PY_NTP_MD5']
 
     except:
         print('\nWARNING: Required NTP Key Environment Variable is missing')
@@ -187,27 +176,23 @@ def main():
         print('code at line 90\n')
 
     # Print Arguments
-    if SESSION_TK['ARG_debug'] == True:
-
-        # Obfuscate password prior to priting on screen. I could just print *****
-        # but this is a bit of fun :-)
-        obfuscated_user_pw = base64.b64encode(SESSION_TK['ENV_user_pw'].encode("utf-8"))
+    if args.debug == True:
 
         print('\n______________________________________________________________')
         print('Command Line Arguments:')
-        print('YAML Group/ Host: ' + SESSION_TK['ARG_yaml'])
-        print('Username:         ' + SESSION_TK['ENV_user_un'])
-        print('Password:         ' + str(obfuscated_user_pw))
-        print('args.tech:        ' + str(SESSION_TK['ARG_tech']))
-        print('args.ftp:         ' + str(SESSION_TK['ARG_ftp']))
-        print('args.clear:       ' + str(SESSION_TK['ARG_clear']))
-        print('args.version:     ' + str(SESSION_TK['ARG_version']))
-        print('args.debug:       ' + str(SESSION_TK['ARG_debug']))
-        print('args.commit:      ' + str(SESSION_TK['ARG_commit']))
+        print('YAML Group/ Host: ' + args.yaml)
+        print('Username:         ' + ENV_user_un)
+        print('Password:         ' + ENV_user_pw)
+        print('args.tech:        ' + str(args.tech))
+        print('args.ftp:         ' + str(args.ftp))
+        print('args.clear:       ' + str(args.clear))
+        print('args.version:     ' + str(args.version))
+        print('args.debug:       ' + str(args.debug))
+        print('args.commit:      ' + str(args.commit))
         print('______________________________________________________________')
 
     # COMMIT Flag
-    if SESSION_TK['ARG_commit'] == True:
+    if args.commit == True:
         print('\n______________________________________________________________')
         print('COMMIT Flag is TRUE "-commit"!')
         print('Are you sure you want to proceed? Recommended action is you')
@@ -218,8 +203,8 @@ def main():
     else:
         print('\nCOMMIT Flag is FALSE: Simulation Mode ONLY. Add "-commit" to commit changes!')
 
-    # Append SESSION_TK to master_log []
-    master_log.append(SESSION_TK)
+
+    master_log.append('OK - Valid Arguements Parsed')
 
     # LOG Script End Date/ Time
     end_time = datetime.datetime.now()

@@ -11,6 +11,8 @@ from netmiko.ssh_exception import NetMikoTimeoutException, \
 from paramiko.ssh_exception import SSHException
 from netmiko import ConnectHandler
 
+logdir = '../LOGS/network_borg/'
+
 def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
 
     if SESSION_TK['ARG_debug'] == True:
@@ -39,7 +41,19 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
             while True:
                 netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Payload : "' + object + '"')
 
-                net_connect = ConnectHandler (device_type=driver, ip=YAML_TK['YAML_fqdn'], username=SESSION_TK['ENV_user_un'], password=SESSION_TK['ENV_user_pw'])
+                # Establish NetMiko device dictionary
+                device = {
+                    'device_type': driver,
+                    'host': YAML_TK['YAML_fqdn'],
+                    'username': SESSION_TK['ENV_user_un'],
+                    'password': SESSION_TK['ENV_user_pw'],
+                    'session_log': logdir + YAML_TK['YAML_fqdn'] + '_' + item + '_' + netmko_mode + '_netmiko.session.log',
+                    #"fast_cli": True, # Shaves 10-seconds. Use with caution
+                }
+
+                # Call ConnectionHandler with a variable number of keyword arguments using **
+                # Pass in key value pairs individually.
+                net_connect = ConnectHandler (**device)
 
                 net_connect.find_prompt()
 
@@ -76,7 +90,19 @@ def netmko (SESSION_TK, YAML_TK, netmko_mode, item, object):
     elif netmko_mode == 'set':
         try:
             while True:
-                net_connect = ConnectHandler (device_type=driver, ip=YAML_TK['YAML_fqdn'], username=SESSION_TK['ENV_user_un'], password=SESSION_TK['ENV_user_pw'])
+
+                # Establish NetMiko device dictionary
+                device = {
+                    'device_type': driver,
+                    'host': YAML_TK['YAML_fqdn'],
+                    'username': SESSION_TK['ENV_user_un'],
+                    'password': SESSION_TK['ENV_user_pw'],
+                    'session_log': logdir + YAML_TK['YAML_fqdn'] + '_' + item + '_' + netmko_mode + '_netmiko.session.log',
+                    #"fast_cli": True, # Shaves 10-seconds. Use with caution
+                }
+
+                # Call ConnectionHandler with a variable number of keyword arguments using **
+                net_connect = ConnectHandler (**device)
 
                 net_connect.find_prompt()
 
