@@ -253,11 +253,8 @@ def sync_diffgen(SESSION_TK, YAML_TK, sync_getcfg_dict, sync_j2rdr_dict):
     sync_diffgen_dict = {}
     sync_diffgen_status = True
 
-    print('*************************')
-    print(str(sync_getcfg_dict))
-    print('*************************')
     for item, objects in sync_getcfg_dict.items():
-        print('ITEM = ' + item)
+        #print('ITEM = ' + item)
         #print('OBJECTS = ' + str(objects))
         if not sync_diffgen_status: # If status set to False on previous loop. do not proceed!
             break
