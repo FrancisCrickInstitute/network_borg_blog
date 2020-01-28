@@ -2,6 +2,9 @@
 
 # Python3 script to synchronise configuration
 
+__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__   = 'None. Enjoy :-)'
+
 from __future__ import print_function, unicode_literals
 import jinja2
 

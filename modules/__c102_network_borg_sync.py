@@ -2,6 +2,9 @@
 #
 # Python3 Network Borg Syncronisation Module
 
+__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__   = 'None. Enjoy :-)'
+
 import requests # Required to disable SSH warnings
 import json # Required for NXAPI JSON RPC
 

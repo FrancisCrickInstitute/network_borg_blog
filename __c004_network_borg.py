@@ -1,6 +1,3 @@
-'''
-Network Borg - Resistance is futile
-'''
 #!/usr/bin/env python3
 #
 # Python3 Network Borg

@@ -9,6 +9,9 @@
 # USAGE:
 # python3 {file}.py -y {YAML_GROUP/HOST}
 
+__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__   = 'None. Enjoy :-)'
+
 from argparse import ArgumentParser # Required for Command Line Argument parsing
 import sys # Required to get Python version information
 import os # Required for screen formatting
