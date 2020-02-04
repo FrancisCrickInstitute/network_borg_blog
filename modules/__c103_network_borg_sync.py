@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Python3 Network Borg Syncronisation Module
+# Python3 Network Borg Syncronisation Module. Chapter 1.3.
 
 __author__      = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__   = 'None. Enjoy :-)'

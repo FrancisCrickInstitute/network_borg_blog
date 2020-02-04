@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Python3 Network Borg (Resistance is futile)
+# Python3 Network Borg (Resistance is futile). Chapter 0.3.
 #
 # REQUIREMENTS:
 # python3 -m pip install nornir. Should cover all the bases.

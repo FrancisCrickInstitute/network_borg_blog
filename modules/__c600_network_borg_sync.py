@@ -1,5 +1,5 @@
 '''
-Network Borg Sync (Workflow) Module
+Network Borg Sync (Workflow) Module. Chapter 6.0.
 '''
 #!/usr/bin/env python3
 
