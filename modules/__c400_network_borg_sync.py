@@ -199,7 +199,7 @@ def sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload):
 
                 # Send the payload object to the NXAPI Module. Example object
                 # {'jsonrpc': '2.0', 'method': 'cli_ascii', 'params': {'cmd': 'show run snmp', 'version': 1.2}, 'id': 2}
-                nxapi_status, nxapi_log, nxapi_list = nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, sync_getset_payload[item])
+                nxapi_status, nxapi_log, nxapi_list = nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, object['CMD'])
 
                 for line in nxapi_log: # Append to Global Log
                     sync_getcfg_log.append(line)

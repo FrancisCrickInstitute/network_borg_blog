@@ -8,13 +8,37 @@ __copyright__ = 'None. Enjoy :-)'
 
 import json # Required for NXAPI JSON RPC
 import requests # Required to disable SSH warnings
-
-from modules._network_borg_nxapi_garbx import garbx
+import re # Required for garbx function
 
 # URLLIB3 package to diabled SSH warnings
 requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
+
+def garbx(raw_response):
+    '''
+    NXAPI Garbarator Function. Extracts the msg: key value from the JSON request
+    '''
+    filtered_response = raw_response["result"]["msg"]
+
+    # Process "\n" as new lines
+    filtered_splitlines = filtered_response.splitlines()
+
+    # Define list
+    stripped_response = []
+
+    for line in filtered_splitlines:
+        # If line starts with a ! or word version, exclude...
+        if line.startswith('!') or line.startswith('version'):
+            pass
+        # Elif line starts with linebreak, exclude...
+        elif re.match(r'^\s*$', line):
+            pass
+        # Add all other lines to response list
+        else:
+            stripped_response.append(line.strip())
+
+    return stripped_response
 
 def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
     '''
@@ -45,7 +69,7 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
         # Example object:
         # [{'CMD': 'show run aaa'}]
         # Extract the value of CMD
-        command = obj[0]['CMD']
+        #command = obj[0]['CMD']
 
         # Define payload to be posted via JSON RPC
         get_payload = [
@@ -53,7 +77,7 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
                 "jsonrpc": "2.0",
                 "method": nxapi_method,
                 "params": {
-                    "cmd": command,
+                    "cmd": obj,
                     "version": 1.2
                 },
                 "id": 1
@@ -70,13 +94,16 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
                 verify=False
             ).json()
 
-            if SESSION_TK['ARG_debug']: # True
-                print('RESPONSE:         ' + str(get_response))
+            print('**** NXAPI List ***')
+            print(get_response)
 
             if 'result' in str(get_response): # 'result' implies OK.
                 # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
                 # Parse through garbx to clean msg blob
                 nxapi_list = garbx(get_response)
+
+                print('**** NXAPI List ***')
+                print(nxapi_list)
                 nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
                     '] Payload (Get) Successful')
                 nxapi_status = True
