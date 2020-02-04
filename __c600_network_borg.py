@@ -1,15 +1,13 @@
 '''
 Network Borg - Resistance is futile
+
+Requirements:
+$ python3 -m pip install -r requirements.txt
+
+Usage:
+$ python3 {file}.py -y {YAML_GROUP/HOST}
 '''
 #!/usr/bin/env python3
-#
-# Python3 Network Borg
-#
-# REQUIREMENTS:
-# python3 -m pip install -r requirements.txt
-#
-# USAGE:
-# python3 {file}.py -y {YAML_GROUP/HOST}
 
 __author__ = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__ = 'None. Enjoy :-)'
