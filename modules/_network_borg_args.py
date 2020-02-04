@@ -1,17 +1,20 @@
+'''
+Python3 Module to Capture CLI Arguments and Evironmental Variables
+'''
 #!/usr/bin/env python
 
-# Python3 module to backup configuration to FTP server.
-
-__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
-__copyright__   = 'None. Enjoy :-)'
+__author__ = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__ = 'None. Enjoy :-)'
 
 import getpass # Required to prompt for username and password in ARG or SYSENV not found.
-import base64 # Required for password obfuscation
 import base64 # Required for password obfuscation
 import os # Required to get OS Environmental Variables
 import sys # Reqquired for y/n prompt
 
 def args(cli_args):
+    '''
+    Arguments Function
+    '''
 
     # Initialise a Session Token Dictionary {}
     SESSION_TK = {}
@@ -25,13 +28,13 @@ def args(cli_args):
     SESSION_TK['ARG_debug'] = cli_args.debug
     SESSION_TK['ARG_commit'] = cli_args.commit
 
-    '''
-    CREDENTIALS
-    '''
+    ###
+    ### CREDENTIALS
+    ###
 
     # If Override -o not set, try to get credentials from CLI Arguments -u -p,
     # Envirnmental Variables or finally GetPass. Add to SESSION_TK (Token)
-    if cli_args.override == False:
+    if not cli_args.override:
 
         # Username
         if cli_args.username is not None:
@@ -61,9 +64,9 @@ def args(cli_args):
         SESSION_TK['ENV_user_pw'] = getpass.getpass('Your Password: ')
 
 
-    '''
-    ENVIRONMENTAL VARIABLES
-    '''
+    ###
+    ### ENVIRONMENTAL VARIABLES
+    ###
 
     # GET ENV variables from SYS Environmental Variables. Must be set manually in
     # user account. On Mac OS 10.13 use 'vi ~/.bash_profile' and add the following:
@@ -74,7 +77,7 @@ def args(cli_args):
     # Use 'env' to discover what is configured.
 
     # FTP Environmental Variables. Add to SESSION_TK (Token) if found.
-    if SESSION_TK['ARG_tech'] == True and SESSION_TK['ARG_ftp'] == True:
+    if SESSION_TK['ARG_tech'] and SESSION_TK['ARG_ftp']:
         try:
             SESSION_TK['ENV_ftp_ip'] = os.environ['PY_FTP_IP']
             SESSION_TK['ENV_ftp_un'] = os.environ['PY_FTP_UN']
@@ -126,29 +129,28 @@ def args(cli_args):
         enab_status = False
 
     # COMMIT Flag
-    if SESSION_TK['ARG_commit'] == True:
+    if SESSION_TK['ARG_commit']: # True
         print('\n______________________________________________________________')
         print('COMMIT Flag is TRUE "-commit"!')
         print('Are you sure you want to proceed? Recommended action is you')
         print('run without -commit to validate what would happen first.')
         print('______________________________________________________________')
-        yes = {'yes','y','ye'} # Accepted Yes values
-        no = {'no','n',''} # Accepted No values including CR
+        choice_yes = {'yes', 'y', 'ye'} # Accepted Yes values
+        choice_no = {'no', 'n', ''} # Accepted No values including CR
         choice = str(input('PROCEED (y/n)? ').lower().strip())
-        if choice in yes:
+        if choice in choice_yes:
             pass
-        elif choice in no:
+        elif choice in choice_no:
             sys.exit(0)
         else:
-            sys.stdout.write('Pleasse respond with "' + str(yes) + '" or "' + str(no) + '"\n')
+            sys.stdout.write('Please respond with "' + str(choice_yes) + '" or "' + \
+                str(choice_no) + '"\n')
             sys.exit(0)
 
     else:
         print('\nCOMMIT Flag is FALSE: Simulation Mode ONLY. Add "-commit" to commit changes!')
 
-
-    # Print SESSION_TK (Token)
-    if SESSION_TK['ARG_debug'] == True:
+    if SESSION_TK['ARG_debug']: # True
         print('\n**DEBUG (network_borg_args.py) : SESSION_TK (Token)')
         print('ARG YAML:         ' + SESSION_TK['ARG_yaml'])
         print('ARG Tech:         ' + str(SESSION_TK['ARG_tech']))
@@ -158,24 +160,34 @@ def args(cli_args):
         print('ARG Debug:        ' + str(SESSION_TK['ARG_debug']))
         print('ARG Commit        ' + str(SESSION_TK['ARG_commit']))
 
-        print('ENV Username * :  ' + str(base64.b64encode(SESSION_TK['ENV_user_un'].encode("utf-8"))))
-        print('ENV Password * :  ' + str(base64.b64encode(SESSION_TK['ENV_user_pw'].encode("utf-8"))))
+        print('ENV Username * :  ' + \
+            str(base64.b64encode(SESSION_TK['ENV_user_un'].encode("utf-8"))))
+        print('ENV Password * :  ' + \
+            str(base64.b64encode(SESSION_TK['ENV_user_pw'].encode("utf-8"))))
 
-        if ftp_status == True:
-            print('ENV FTP IP * :    ' + str(base64.b64encode(SESSION_TK['ENV_ftp_ip'].encode("utf-8"))))
-            print('ENV FTP User * :  ' + str(base64.b64encode(SESSION_TK['ENV_ftp_un'].encode("utf-8"))))
-            print('ENV FTP Passwd * :' + str(base64.b64encode(SESSION_TK['ENV_ftp_pw'].encode("utf-8"))))
+        if ftp_status: # True
+            print('ENV FTP IP * :    ' + \
+                str(base64.b64encode(SESSION_TK['ENV_ftp_ip'].encode("utf-8"))))
+            print('ENV FTP User * :  ' + \
+                str(base64.b64encode(SESSION_TK['ENV_ftp_un'].encode("utf-8"))))
+            print('ENV FTP Passwd * :' + \
+                str(base64.b64encode(SESSION_TK['ENV_ftp_pw'].encode("utf-8"))))
 
-        if snmp_status == True:
-            print('ENV SNMP Key * :  ' + str(base64.b64encode(SESSION_TK['ENV_snmp_key'].encode("utf-8"))))
+        if snmp_status: # True
+            print('ENV SNMP Key * :  ' + \
+                str(base64.b64encode(SESSION_TK['ENV_snmp_key'].encode("utf-8"))))
 
-        if ntp_status == True:
-            print('ENV NTP Key * :   ' + str(base64.b64encode(SESSION_TK['ENV_ntp_key'].encode("utf-8"))))
-            print('ENV NTP MD5 * :   ' + str(base64.b64encode(SESSION_TK['ENV_ntp_md5'].encode("utf-8"))))
+        if ntp_status: # True
+            print('ENV NTP Key * :   ' + \
+                str(base64.b64encode(SESSION_TK['ENV_ntp_key'].encode("utf-8"))))
+            print('ENV NTP MD5 * :   ' + \
+                str(base64.b64encode(SESSION_TK['ENV_ntp_md5'].encode("utf-8"))))
 
-        if enab_status == True:
-            print('ENV Enable Production Password * : ' + str(base64.b64encode(SESSION_TK['ENV_enab_pw_prd'].encode("utf-8"))))
-            print('ENV Enable Develkopment Password * : ' + str(base64.b64encode(SESSION_TK['ENV_enab_pw_dev'].encode("utf-8"))))
+        if enab_status: # True
+            print('ENV Enable Production Password * : ' + \
+                str(base64.b64encode(SESSION_TK['ENV_enab_pw_prd'].encode("utf-8"))))
+            print('ENV Enable Develkopment Password * : ' + \
+                str(base64.b64encode(SESSION_TK['ENV_enab_pw_dev'].encode("utf-8"))))
 
         print('* = Obfuscated')
 

@@ -1,11 +1,13 @@
+'''
+extract_value() module courteous of Todd Birchard. Given a key name, it searches
+the JSON response and extracts the value. Designed to be flexible and agnostic
+https://hackersandslackers.com/extract-data-from-complex-json-python/
+'''
+
 #!/usr/bin/env python3
 
-# extract_value() module courteous of Todd Birchard. Given a key name, it searches
-# the JSON response and extracts the value. Designed to be flexible and agnostic
-# https://hackersandslackers.com/extract-data-from-complex-json-python/
-
-__author__      = 'Todd Birchard'
-__copyright__   = 'See URL'
+__author__ = 'Todd Birchard'
+__copyright__ = 'See URL'
 
 def xtval(obj, key):
     """Pull all values of specified key from nested JSON."""

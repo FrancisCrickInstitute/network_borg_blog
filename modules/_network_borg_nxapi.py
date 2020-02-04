@@ -1,12 +1,13 @@
+'''
+Python3 script to get and scrape Cisco NX-OS configuration using NXAPI
+'''
 #!/usr/bin/env python3
 
-# Python3 script to get and scrape Cisco IOS configuration using NetMiko
+__author__ = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__ = 'None. Enjoy :-)'
 
-__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
-__copyright__   = 'None. Enjoy :-)'
-
-import requests # Required to disable SSH warnings
 import json # Required for NXAPI JSON RPC
+import requests # Required to disable SSH warnings
 
 from modules._network_borg_nxapi_garbx import garbx
 
@@ -15,14 +16,17 @@ requests.packages.urllib3.disable_warnings(
     requests.packages.urllib3.exceptions.InsecureRequestWarning
 )
 
-def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
+def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
+    '''
+    NXAPI Function
+    '''
 
-    if SESSION_TK['ARG_debug'] == True:
+    if SESSION_TK['ARG_debug']: # True
         print('\n**DEBUG (_network_borg_nxapi.py) : Objects Received:')
         print('SESSION_TK:       ' + str(SESSION_TK))
         print('YAML_TK:          ' + str(YAML_TK))
         print('ITEM:             ' + str(item))
-        print('OBJECT(CMD):      ' + str(object))
+        print('OBJECT(CMD):      ' + str(obj))
         print('MODE:             ' + nxapi_mode)
 
     nxapi_log = []
@@ -31,7 +35,7 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
 
     # Define JSON Payload Header and URL
     myurl = ('https://' + YAML_TK['YAML_fqdn'] + ':830/ins')
-    myheader={'content-type':'application/json-rpc'}
+    myheader = {'content-type':'application/json-rpc'}
 
     if nxapi_mode == 'get':
 
@@ -41,19 +45,19 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
         # Example object:
         # [{'CMD': 'show run aaa'}]
         # Extract the value of CMD
-        command = object[0]['CMD']
+        command = obj[0]['CMD']
 
         # Define payload to be posted via JSON RPC
-        get_payload=[
-          {
-            "jsonrpc": "2.0",
-            "method": nxapi_method,
-            "params": {
-              "cmd": command,
-              "version": 1.2
-            },
-            "id": 1
-          }
+        get_payload = [
+            {
+                "jsonrpc": "2.0",
+                "method": nxapi_method,
+                "params": {
+                    "cmd": command,
+                    "version": 1.2
+                },
+                "id": 1
+            }
         ]
 
         try:
@@ -66,30 +70,35 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                 verify=False
             ).json()
 
-            if SESSION_TK['ARG_debug'] == True:
+            if SESSION_TK['ARG_debug']: # True
                 print('RESPONSE:         ' + str(get_response))
 
             if 'result' in str(get_response): # 'result' implies OK.
                 # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
                 # Parse through garbx to clean msg blob
                 nxapi_list = garbx(get_response)
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Successful')
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
+                    '] Payload (Get) Successful')
                 nxapi_status = True
 
-            elif 'error' in str(response): # 'error' implies BAD.
+            elif 'error' in str(get_response): # 'error' implies BAD.
                 # Example Response - {'jsonrpc': '2.0', 'error': {CROPPED}, 'id': 2}
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Unsuccessful! Reason: "' + str(response['error']['data']['msg'].strip()))
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
+                    '] Payload (Get) Unsuccessful! Reason: "' + \
+                    str(get_response['error']['data']['msg'].strip()))
                 nxapi_status = False
 
             else:
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Get) Unhandled ' + str(response))
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
+                    '] Payload (Get) Unhandled ' + str(get_response))
                 nxapi_status = False
 
             return nxapi_status, nxapi_log, nxapi_list
 
-        except Exception as e:
-            nxapi_log.append(YAML_TK['YAML_fqdn'] + ': Response Exception ' + str(e))
-            nxapi_log.append(YAML_TK['YAML_fqdn'] + ': *** Ensure NXAPI is enabled on ' + YAML_TK['YAML_fqdn'] + ' ***:')
+        except Exception as error:
+            nxapi_log.append(YAML_TK['YAML_fqdn'] + ': Response Exception ' + str(error))
+            nxapi_log.append(YAML_TK['YAML_fqdn'] + \
+                ': *** Ensure NXAPI is enabled on ' + YAML_TK['YAML_fqdn'] + ' ***:')
             nxapi_log.append('feature nxapi')
             nxapi_log.append('no nxapi http')
             nxapi_log.append('nxapi https port 830')
@@ -104,19 +113,19 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
         nxapi_method = 'cli'
 
         try:
-            if SESSION_TK['ARG_commit'] == True:
+            if SESSION_TK['ARG_commit']: # True
 
                 # Define payload to be posted via JSON RPC
-                set_payload=[
-                  {
-                    "jsonrpc": "2.0",
-                    "method": nxapi_method,
-                    "params": {
-                      "cmd": object,
-                      "version": 1.2
-                    },
-                    "id": 1
-                  }
+                set_payload = [
+                    {
+                        "jsonrpc": "2.0",
+                        "method": nxapi_method,
+                        "params": {
+                            "cmd": obj,
+                            "version": 1.2
+                        },
+                        "id": 1
+                    }
                 ]
 
                 # Send the JSON RPC payload
@@ -128,37 +137,41 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                     verify=False
                 ).json()
 
-                if SESSION_TK['ARG_debug'] == True:
+                if SESSION_TK['ARG_debug']: # True
                     print('RESPONSE:         ' + str(set_response))
 
                 if 'result' in str(set_response):
                     # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Successful "' + str(object) + '"')
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
+                        '] Payload (Set) Successful "' + str(obj) + '"')
                     nxapi_status = True
 
                 elif 'error' in str(set_response):
                     # Example Response - {'jsonrpc': '2.0', 'error': {CROPPED}, 'id': 2}
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Unsuccessful! Reason: "' + str(object) + '" ' + str(set_response['error']['data']['msg'].strip()))
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
+                        '] Payload (Set) Unsuccessful! Reason: "' + str(obj) + \
+                        '" ' + str(set_response['error']['data']['msg'].strip()))
                     nxapi_status = False
 
                 else:
-                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Payload (Set) Unhandled: ' + str(set_response))
+                    nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) \
+                        + '] Payload (Set) Unhandled: ' + str(set_response))
                     nxapi_status = False
 
                 # Copy running-config startup-config
-                wrm_payload=[
-                  {
-                    "jsonrpc": "2.0",
-                    "method": "cli",
-                    "params": {
-                      "cmd": "copy running-config startup-config",
-                      "version": 1.2
-                    },
-                    "id": 1
-                  }
+                wrm_payload = [
+                    {
+                        "jsonrpc": "2.0",
+                        "method": "cli",
+                        "params": {
+                            "cmd": "copy running-config startup-config",
+                            "version": 1.2
+                        },
+                        "id": 1
+                    }
                 ]
 
-                wrm_response = requests.post(
+                requests.post(
                     myurl,
                     data=json.dumps(wrm_payload),
                     headers=myheader,
@@ -174,16 +187,18 @@ def nxapi (SESSION_TK, YAML_TK, nxapi_mode, item, object):
                 return nxapi_status, nxapi_log, nxapi_list
 
             else: # commit Flag not True so report only
-                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Config Payload !! : "' + str(object) + '"')
+                nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
+                    '] Config Payload !! : "' + str(obj) + '"')
                 nxapi_status = False
                 return nxapi_status, nxapi_log, nxapi_list
 
-        except Exception as e:
-            nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] Config Payload ERR : "' + str(object) + '" < RESULT: FAIL ' + str(e))
+        except Exception as error:
+            nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + '] \
+                Config Payload ERR : "' + str(obj) + '" < RESULT: FAIL ' + str(error))
             nxapi_status = False
             return nxapi_status, nxapi_log, nxapi_list
     else:
         nxapi_log.append(YAML_TK['YAML_fqdn'] + ': NXAPI Mode Invalid')
         nxapi_status = False
 
-        return nxapi_status, nxapi_log, nxapi_list
+    return nxapi_status, nxapi_log, nxapi_list

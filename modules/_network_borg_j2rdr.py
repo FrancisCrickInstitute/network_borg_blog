@@ -1,40 +1,45 @@
+'''
+Python3 script to render Jinja2 given an item and object
+'''
 #!/usr/bin/env python
-
-# Python3 script to render Jinja2 given an item and object
 
 from __future__ import print_function, unicode_literals
 import jinja2
 
-__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
-__copyright__   = 'None. Enjoy :-)'
+__author__ = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__ = 'None. Enjoy :-)'
 
-# Referenced module function
-def j2rdr(SESSION_TK, YAML_TK, item, object):
+def j2rdr(SESSION_TK, YAML_TK, item, obj):
+    '''
+    J2RDR Function
+    '''
 
-    if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (_network_borg_j2rdr.py) : [' + item + '] J2RDR Module Variables Recieved:')
-        print('OBJECT: ' + str(object))
+    if SESSION_TK['ARG_debug']: # True
+        print('\n**DEBUG (_network_borg_j2rdr.py) : [' \
+            + item + '] J2RDR Module Variables Recieved:')
+        print('OBJECT: ' + str(obj))
 
     # Initialise Dictionaries
     j2rdr_log = []
     j2rdr_list = []
 
     try: # J2 Template File
-        file = '../network_j2templates/' + object['TEMPLATE']
+        file = '../network_j2templates/' + obj['TEMPLATE']
 
         # GET Template Config
-        with open(file) as f:
-            jinja_template = f.read()
+        with open(file) as file:
+            jinja_template = file.read()
 
         try: # Try to read the file into Jina2
             j = jinja2.Template(jinja_template)
             j2file_status = True
 
-        except Exception as e:
-            j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 File Error: ' + str(e) + ' * Likely misdefined VAR in ' + str(object['TEMPLATE']))
+        except Exception as error:
+            j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 File Error: ' + \
+                str(error) + ' * Likely misdefined VAR in ' + str(obj['TEMPLATE']))
             j2file_status = False
 
-        if j2file_status == True:
+        if j2file_status: # True
 
             # Initialise Dict {}
             render_dict = {}
@@ -65,9 +70,9 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
                 count = 0 # Zerorise Count
 
                 try: # Define render_dict {} Variables
-                    for var in object['VARS'][0]:
+                    for var in obj['VARS'][0]:
                         # Create a DICT item with VAR* as the key
-                        render_dict['VAR' + str(count)] = str(object['VARS'][0][var])
+                        render_dict['VAR' + str(count)] = str(obj['VARS'][0][var])
                         count += 1 # Increment count
 
                     j2dict_status = True
@@ -91,8 +96,9 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
                 if j2dict_status == True:
                     try: # Render J2 File
 
-                        if SESSION_TK['ARG_debug'] == True:
-                            print('\n**DEBUG (_network_borg_sync.py) : [' + item + '] J2 Variables Dict:')
+                        if SESSION_TK['ARG_debug']: # True
+                            print('\n**DEBUG (_network_borg_sync.py) : [' + item + \
+                                '] J2 Variables Dict:')
                             print(render_dict)
 
                         jinja_rendered = j.render(render_dict)
@@ -104,28 +110,33 @@ def j2rdr(SESSION_TK, YAML_TK, item, object):
                         j2rdr_list = list(filter(None, j2rdr_list))
 
                         if SESSION_TK['ARG_debug'] == True:
-                            print('\n**DEBUG (_network_borg_sync.py) : [' + item + '] J2 Filtered List:')
+                            print('\n**DEBUG (_network_borg_sync.py) : [' + item + \
+                                '] J2 Filtered List:')
                             print(j2rdr_list)
 
-                        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Successful ')
+                        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
+                            '] J2 Render Successful ')
                         j2rdr_status = True
 
-                    except Exception as e:
+                    except Exception as error:
                         j2rdr_status = False
-                        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Error: ' + str(e))
+                        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
+                            '] J2 Render Error: ' + str(error))
 
                 else: # j2dict_status == False
                     j2rdr_status = False
 
-            except Exception as e: # Parse Variables Exception
+            except Exception as error: # Parse Variables Exception
                 j2rdr_status = False
-                j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Dictionary Error ' + str(e))
+                j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
+                    '] J2 Render Dictionary Error ' + str(error))
 
         else: # j2file_status == False
             j2rdr_status = False
 
-    except Exception as e:
+    except Exception as error:
         j2rdr_status = False
-        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] J2 Render Dictionary Error ' + str(e))
+        j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
+            '] J2 Render Dictionary Error ' + str(error))
 
     return (j2rdr_status, j2rdr_log, j2rdr_list)

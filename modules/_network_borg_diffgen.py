@@ -1,35 +1,35 @@
+'''
+Python3 Script to Identify Differences Between Lists
+'''
 #!/usr/bin/env python
 
-# Python3 script to synchronise configuration
+__author__ = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__ = 'None. Enjoy :-)'
 
-__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
-__copyright__   = 'None. Enjoy :-)'
-
-from __future__ import print_function, unicode_literals
-import jinja2
-
-import logging
-import re
-
-# DIFF function. See 'https://www.geeksforgeeks.org/python-set-difference/'
-# to understand usage.
 def diff(listA, listB):
-    return (list(set(listA) - set (listB)))
+    '''
+    DIFF Function See 'https://www.geeksforgeeks.org/python-set-difference/'
+    to understand usage.
+    '''
+    return list(set(listA) - set(listB))
 
-# Empty List function. See https://www.geeksforgeeks.org/python-check-whether-list-empty-not/
-# to understand. If list is empry, return 1, else return 0.
-def enquiry(list):
-    if not list:
+def enquiry(diffgen):
+    '''
+    Empty List function. See https://www.geeksforgeeks.org/python-check-whether-list-empty-not/
+    to understand. If list is empry, return 1, else return 0 (default).
+    '''
+
+    if not diffgen:
         return 1
-    else:
-        return 0
 
-# Referenced module function
 def diffgen(SESSION_TK, YAML_TK, sync_getcfg_list, sync_j2rdr_list, item):
+    '''
+    DIFFGEN Function
+    '''
 
     diffgen_status = False
 
-    if SESSION_TK['ARG_debug'] == True:
+    if SESSION_TK['ARG_debug']: # True
         print('\n**DEBUG (_network_borg_diffgen.py) : [' + item +'] DIFFGEN Lists Recieved:')
         print('J2RDR DICT:  ' + str(sync_j2rdr_list))
         print('GETCFG DICT: ' + str(sync_getcfg_list))
@@ -60,15 +60,16 @@ def diffgen(SESSION_TK, YAML_TK, sync_getcfg_list, sync_j2rdr_list, item):
             diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] - Delete True')
             diffgen_del_status = True
 
-        if (diffgen_add_status == True) or (diffgen_del_status == True):
+        if diffgen_add_status or diffgen_del_status: # Either True
             diffgen_status = True
 
         else:
             diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No Difference Found')
             diffgen_status = True
 
-    except Exception as e:
-        diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Difference Failure ' + str(e))
+    except Exception as error:
+        diffgen_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] Difference Failure ' + \
+            str(error))
         diffgen_status = False
 
     return (diffgen_status, diffgen_log, diffgen_add, diffgen_del)

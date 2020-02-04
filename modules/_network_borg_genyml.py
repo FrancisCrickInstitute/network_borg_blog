@@ -1,14 +1,17 @@
+'''
+Python3 Script to Generate YAML Dictionary {} Given a YAML Group or Host Argument
+'''
 #!/usr/bin/env python
 
-# Python3 script to generate a yaml_dict {} given a YAML Group or
-# Host argument
-
-__author__      = 'Paul Mahan, Francis Crick Institute, London UK'
-__copyright__   = 'None. Enjoy :-)'
+__author__ = 'Paul Mahan, Francis Crick Institute, London UK'
+__copyright__ = 'None. Enjoy :-)'
 
 from nornir import InitNornir
 
 def genyml(yaml_arg):
+    '''
+    Generate YAML Dict Function
+    '''
 
     # Initialise Dictionaries
     yaml_log = []
@@ -17,7 +20,7 @@ def genyml(yaml_arg):
     yaml_log.append('YAML ARGUMENT = ' + yaml_arg + ': YAML DISCOVERY STARTED...')
     yaml_status = False # Unless otherwise overwritten
 
-    # Initialise NorNir
+    # Initialise NorNir. config.yaml must exist in working directory ../
     nr = InitNornir(config_file='config.yaml')
 
     is_host = False
@@ -27,9 +30,6 @@ def genyml(yaml_arg):
     # so add to yaml_dict {}
 
     try:
-        nr.inventory.hosts[yaml_arg]
-        is_host = True
-
         # Get a list of facts from the hosts.yaml for the given host (yaml_arg)
 
         facts_dict = {} # Zero Dict
@@ -40,17 +40,19 @@ def genyml(yaml_arg):
             facts_dict['DOMAIN'] = nr.inventory.hosts[yaml_arg]['domain']
             facts_dict['ENV'] = nr.inventory.hosts[yaml_arg]['env']
 
+            # Set FQDN to hostname.domain
             fqdn = str(yaml_arg) + '.' + facts_dict['DOMAIN']
 
             # Create a yaml_dict {} using the FQDM as the key value and
-            # facts_dict as n object
+            # facts_dict as an object
             yaml_dict[fqdn] = facts_dict
 
             yaml_log.append(fqdn + ': - Valid YAML Host ' + u'\u2714')
             yaml_status = True
+            is_host = True
 
-        except Exception as e:
-            yaml_log.append(str(host) + ': Invalid YAML Host. Missing YAML Vars! ' + str(e))
+        except Exception as error:
+            yaml_log.append(str(yaml_arg) + ': Invalid YAML Host. Missing YAML Vars! ' + str(error))
             yaml_status = False
 
     except:
@@ -60,8 +62,6 @@ def genyml(yaml_arg):
     # so iterate over and add to host_list []
     try:
         for host in nr.inventory.children_of_group(yaml_arg):
-
-            is_group = True
 
             # Get a list of facts from the hosts.yaml for the given host (yaml_arg)
 
@@ -82,21 +82,22 @@ def genyml(yaml_arg):
 
                 yaml_log.append(str(fqdn) + ': - Valid YAML Host ' + u'\u2714')
                 yaml_status = True
+                is_group = True
 
-            except Exception as e: # try: unsuccessful
-                yaml_log.append(str(host) + ': Invalid YAML Host. Missing YAML Vars! ' + str(e))
+            except Exception as error: # try: unsuccessful
+                yaml_log.append(str(host) + ': Invalid YAML Host. Missing YAML Vars! ' + str(error))
                 yaml_status = False
 
     except:
-       pass # Not a group
+        pass # Not a group
 
     # If neither HOST or GROUP
-    if is_group == False and is_host == False:
+    if not is_group and not is_host: # Both False
         yaml_log.append('ERROR: ' + yaml_arg + ' is neither a valid YAML Group or Hostname!\n')
         yaml_status = False
 
     # If yaml_status == False, YAML Dicovery Error
-    if yaml_status == False:
+    if not yaml_status:
         yaml_log.append('ERROR: YAML Discovery Error!')
 
     return yaml_status, yaml_log, yaml_dict

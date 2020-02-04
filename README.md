@@ -164,3 +164,6 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 
 ### Version 0.9.8
 - Updated copyright and author notice across all files.
+
+### Version 0.9.9
+- Linter identified too many blatant errors. Corrected to Maintenance release and back-ported to Blog release.
