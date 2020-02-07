@@ -130,13 +130,13 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
                 net_connect.disconnect()
 
                 netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
-                    '] Response "' + obj + '" OK')
+                    '] Response && "' + obj + '" OK')
                 netmko_status = True
                 break
 
         except Exception as error:
             netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
-                '] Config Response && : "' + obj + '" ERR: ' + str(error))
+                '] Config Response: "' + obj + '" ERR: ' + str(error))
             netmko_status = False
 
     else:

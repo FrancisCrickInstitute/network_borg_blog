@@ -165,7 +165,7 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
                 if 'result' in str(set_response):
                     # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
                     nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
-                        '] Payload (Set) Successful "' + str(obj) + '"')
+                        '] Payload (Set) Successful && "' + str(obj) + '" OK')
                     nxapi_status = True
 
                 elif 'error' in str(set_response):
