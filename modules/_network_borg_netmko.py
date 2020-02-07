@@ -21,7 +21,7 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
         print('SESSION_TK:       ' + str(SESSION_TK))
         print('YAML_TK:          ' + str(YAML_TK))
         print('ITEM:             ' + item)
-        print('obj(CMD):      ' + obj)
+        print('obj(CMD):         ' + obj)
         print('MODE:             ' + netmko_mode)
 
     # Driver Matrix
@@ -107,7 +107,7 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
                     'password': SESSION_TK['ENV_user_pw'],
                     'session_log': LOGDIR + YAML_TK['YAML_fqdn'] + '_' + item + \
                         '_' + netmko_mode + '_netmiko.session.log',
-                    #"fast_cli": True, # Shaves 10-seconds. Use with caution
+                    #'fast_cli': True, # Shaves 10-seconds. Use with caution
                 }
 
                 # Call ConnectionHandler with a variable number of keyword arguments using **
@@ -123,6 +123,7 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
                 if err in net_set:
                     netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
                         '] Response "' + obj + '" ERR: Invalid Command!')
+                    net_connect.disconnect()
                     break
 
                 # Save Configuration and Disconnect

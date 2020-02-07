@@ -169,6 +169,11 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 - Linter identified too many blatant errors. Corrected to Maintenance release and back-ported to Blog release.
 
 ### Version 0.9.9.1
-- Renamed files to align with Blog Structure. Appendices files now start __x.
+- Renamed files to align with Blog structure. Appendices files now start __x.
 - Merged _network_borg_nxapi_garbx.py module as function into _network_borg_nxapi.py module.
 - Changed structure of data sent from _network_borg_sync.py:getcfg to _network_borg_nxapi.py so 'CMD' is no longer extracted within _network_borg_nxapi.py but sent pre-extracted from _network_borg_sync.py:getcfg.
+
+### Version 0.9.9.2
+- Corrected logical error in _network_borg_genyml.py which incorrectly generates an error log.
+- Renamed __c330 files to __c300.
+- Renames __c220 files to __c200. 

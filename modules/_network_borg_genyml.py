@@ -52,7 +52,6 @@ def genyml(yaml_arg):
             is_host = True
 
         except Exception as error:
-            yaml_log.append(str(yaml_arg) + ': Invalid YAML Host. Missing YAML Vars! ' + str(error))
             yaml_status = False
 
     except:
@@ -85,7 +84,6 @@ def genyml(yaml_arg):
                 is_group = True
 
             except Exception as error: # try: unsuccessful
-                yaml_log.append(str(host) + ': Invalid YAML Host. Missing YAML Vars! ' + str(error))
                 yaml_status = False
 
     except:
@@ -93,7 +91,7 @@ def genyml(yaml_arg):
 
     # If neither HOST or GROUP
     if not is_group and not is_host: # Both False
-        yaml_log.append('ERROR: ' + yaml_arg + ' is neither a valid YAML Group or Hostname!\n')
+        yaml_log.append('ERROR: ' + yaml_arg + ' is neither a valid YAML Group or Hostname!')
         yaml_status = False
 
     # If yaml_status == False, YAML Dicovery Error

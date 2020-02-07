@@ -21,7 +21,7 @@ import os # Required for screen formatting & writing master_log to file.
 # sub-folder(s).
 from modules._network_borg_args import args
 from modules._network_borg_genyml import genyml
-from modules.__c330_network_borg_sync import sync
+from modules.__c300_network_borg_sync import sync
 
 # Detect Python version. Python Major=3, Minor=6 expected
 if (sys.version_info < (3, 6)):

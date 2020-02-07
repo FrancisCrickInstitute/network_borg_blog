@@ -94,16 +94,11 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
                 verify=False
             ).json()
 
-            print('**** NXAPI List ***')
-            print(get_response)
-
             if 'result' in str(get_response): # 'result' implies OK.
                 # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
                 # Parse through garbx to clean msg blob
                 nxapi_list = garbx(get_response)
 
-                print('**** NXAPI List ***')
-                print(nxapi_list)
                 nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
                     '] Payload (Get) Successful')
                 nxapi_status = True
