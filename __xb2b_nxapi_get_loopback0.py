@@ -4,7 +4,7 @@
 # command.
 #
 # REQUIREMENTS:
-# python3 -m pip install nornir. Should cover all the bases.
+# python3 -m pip install -r requirements.txt
 #
 # NX-API must be enabled on Nexus node!!!:
 #  feature nxapi

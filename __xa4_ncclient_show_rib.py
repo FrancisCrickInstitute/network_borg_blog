@@ -3,7 +3,7 @@
 # Python3 script to get XML response to passed payload.
 #
 # REQUIREMENTS:
-# python3 -m pip install nornir. Should cover all the bases.
+# python3 -m pip install -r requirements.txt
 #
 # NETCONF-YANG must be enabled on the Cisco node!!!:
 #   netconf-yang ssh port 830
