@@ -6,7 +6,6 @@ Python3 script to get and scrape Cisco IOS configuration using NetMiko
 __author__ = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__ = 'None. Enjoy :-)'
 
-# Use Netmiko to send commands to host
 from netmiko import ConnectHandler
 
 LOGDIR = '../LOGS/network_borg/'

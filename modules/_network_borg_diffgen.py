@@ -1,5 +1,5 @@
 '''
-Python3 Script to Identify Differences Between Lists
+Python3 Script to Identify Differences Between Two Lists
 '''
 #!/usr/bin/env python
 

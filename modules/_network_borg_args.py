@@ -6,10 +6,10 @@ Python3 Module to Capture CLI Arguments and Evironmental Variables
 __author__ = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__ = 'None. Enjoy :-)'
 
-import getpass # Required to prompt for username and password in ARG or SYSENV not found.
+import getpass # Required to prompt for username and password if ARG or SYSENV not found.
 import base64 # Required for password obfuscation
 import os # Required to get OS Environmental Variables
-import sys # Reqquired for y/n prompt
+import sys # Required for y/n prompt
 
 def args(cli_args):
     '''

@@ -1,12 +1,11 @@
 '''
-Python3 Script to Discover Network Node
+Python3 Script to Discover Network Device Using NAPALM
 '''
 #!/usr/bin/env python
 
 __author__ = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__ = 'None. Enjoy :-)'
 
-# Use NAPLAM to get node facts and config
 from napalm import get_network_driver
 
 def discvry(SESSION_TK, YAML_TK):

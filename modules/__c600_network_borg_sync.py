@@ -8,7 +8,9 @@ __copyright__ = 'None. Enjoy :-)'
 
 import requests # Required to disable SSH warnings
 
-# Import modules from '/modules' sub-folder within script directory.
+# Import modules from '/modules' sub-folder within script directory. Even though
+# the modules are in the same folder as this file, the working directory is one
+# level up ../network_borg.py
 # Folder name is significant to Python. '__init__.py' file required in Parent and
 # sub-folder(s).
 from modules._network_borg_discvry import discvry
@@ -487,6 +489,7 @@ def sync(SESSION_TK, YAML_TK):
                             else: # sync_push_status == False:
                                 sync_log.append(YAML_TK['YAML_fqdn'] + \
                                     ': = PUSH Module Failure ' + u'\u2717')
+                                sync_loop = False
 
                         else: # sync_diffgen_status == False:
                             sync_log.append(YAML_TK['YAML_fqdn'] + \

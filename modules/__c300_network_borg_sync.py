@@ -8,7 +8,9 @@ __copyright__   = 'None. Enjoy :-)'
 import requests # Required to disable SSH warnings
 import json # Required for NXAPI JSON RPC
 
-# Import modules from '/modules' sub-folder within script directory.
+# Import modules from '/modules' sub-folder within script directory. Even though
+# the modules are in the same folder as this file, the working directory is one
+# level up ../network_borg.py
 # Folder name is significant to Python. '__init__.py' file required in Parent and
 # sub-folder(s).
 from modules._network_borg_discvry import discvry
