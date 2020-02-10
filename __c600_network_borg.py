@@ -209,13 +209,15 @@ def main():
     # WRITE MASTER_LOG to file
     # Make a folder in script working directory to store results
     logdir = '../LOGS/network_borg/'
+    # Modify the time stamp to not contain special characters (: & /)
+    log_time = start_time.strftime('%Y_%m_%d_%H_%M_%S')
 
     try:
         os.makedirs(logdir)
     except FileExistsError:
         pass # Folder exisits so nothing to do
 
-    logfile = open(logdir + str(start_time) + '.log', 'w')
+    logfile = open(logdir + str(log_time) + '.log', 'w')
     for line in MASTER_LOG:
         logfile.write(line + '\n')
     logfile.close()

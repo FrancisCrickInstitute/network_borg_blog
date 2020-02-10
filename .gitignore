@@ -3,3 +3,4 @@ NETVE/
 nornir.log
 __pycache__
 *.pyc
+git-pip.py
