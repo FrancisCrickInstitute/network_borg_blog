@@ -180,3 +180,11 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 
 ### Version 0.9.9.3
 - Changed __c600_network_borg.py log file name to YYYY_MM_DD_HH_MM_SS as opposed to generic / & : delimiters which are special characters on some systems.
+
+### Version 0.9.9.4
+- Drastically improved performance of NetMiko by sending a command set list [] as opposed to individual commands.
+
+### Version 0.9.9.5
+- Re-ordered _network_borg_sync.py so GETCFG (network_borg_netmko/nxapi.py) 'get' mode happens before J2 Render (network_borg_j2rdr.py). Preempting future requires to GET more variables to be used in J2RDR.  
+- Re-write of _network_borg_j2rdr.py to call the J2 Render using the Python ** keyword arguments. Means we can send as key value pairs as opposed to messily re-naming VARS to VAR0, 1, 2 etc. J2 Template now has the key reference variable.
+- Re-write of _network_borg_j2rdr.py to strictly enforce rendering with variables. If J2 Render attempts to render a file with a missing VAR, bomb out and generate error.

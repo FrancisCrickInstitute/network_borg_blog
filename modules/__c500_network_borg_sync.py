@@ -92,68 +92,6 @@ def sync_getset(SESSION_TK, YAML_TK, sync_discvry_dict):
 
     return sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload
 
-# J2RDR (Template Render)
-# REQ: SESSION_TK, YAML_TK, sync_getset_template
-# RTN: sync_j2rdr_status, sync_j2rdr_dict
-def sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template):
-
-    sync_j2rdr_log = []
-
-    sync_j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': > J2RDR Module Initialised...')
-
-    # Initialise a j2rdr_dict {}. This will store the item as the key value
-    # and the j2rdr_list as an object.
-    sync_j2rdr_dict = {}
-    sync_j2rdr_status = True
-
-    # Loop over our template_set:
-    # template_set = {
-    #    'SNMP': <<< IS ITEM
-    #        [
-    #            {
-    #            'TEMPLATE': 'template_n7k_dev_snmp.j2', <<< IS OBJECT within OBJECTS
-    #            'VARS': <<< IS OBJECT within OBJECTS
-    #                [
-    #                    {
-    #                    'SNMP_LOC': SESSION_TK['YAML_loc'], #YAML Inventory <<< IS SUB-OBJECT
-    #                    'SNMP_SRC': 'Loopback0', <<< IS SUB-OBJECT
-    #                    'SNMP_KEY': SESSION_TK['ENV_snmp_key'] #System Enviro Var <<< IS SUB-OBJECT
-    #                    }
-    #                ]
-    #            }
-    #        ],
-
-
-    for item, objects in sync_getset_template.items():
-
-        if sync_j2rdr_status == False: # If status set to False on previous loop. do not proceed!
-            break
-
-        # print('ITEM = ' + item)
-        # print('OBJECTS = ' + str(objects))
-        for object in objects:
-            #print('OBJECT = ' + str(object))
-            j2rdr_status, j2rdr_log, j2rdr_list = j2rdr(SESSION_TK, YAML_TK, item, object)
-
-            for line in j2rdr_log:
-                sync_j2rdr_log.append(line)
-
-
-
-            if j2rdr_status == True:
-                sync_j2rdr_dict[item] = j2rdr_list
-                sync_j2rdr_status = True
-
-            else: # j2rdr_status == False:
-                sync_j2rdr_dict[item] = ''
-                sync_j2rdr_status = False
-
-    if SESSION_TK['ARG_debug'] == True:
-        print('\n**DEBUG (_network_borg_sync.py) : J2RDR Module Dictionary Returned:')
-        print(str(sync_j2rdr_dict))
-
-    return sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict
-
 # GETCFG (Current Configuration)
 # REQ: SESSION_TK, YAML_TK, sync_getset_payload
 # RTN: sync_getcfg_status, sync_getcfg_dict
@@ -223,6 +161,68 @@ def sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload):
         print(sync_getcfg_dict)
 
     return sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict
+
+# J2RDR (Template Render)
+# REQ: SESSION_TK, YAML_TK, sync_getset_template
+# RTN: sync_j2rdr_status, sync_j2rdr_dict
+def sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template):
+
+    sync_j2rdr_log = []
+
+    sync_j2rdr_log.append(YAML_TK['YAML_fqdn'] + ': > J2RDR Module Initialised...')
+
+    # Initialise a j2rdr_dict {}. This will store the item as the key value
+    # and the j2rdr_list as an object.
+    sync_j2rdr_dict = {}
+    sync_j2rdr_status = True
+
+    # Loop over our template_set:
+    # template_set = {
+    #    'SNMP': <<< IS ITEM
+    #        [
+    #            {
+    #            'TEMPLATE': 'template_n7k_dev_snmp.j2', <<< IS OBJECT within OBJECTS
+    #            'VARS': <<< IS OBJECT within OBJECTS
+    #                [
+    #                    {
+    #                    'SNMP_LOC': SESSION_TK['YAML_loc'], #YAML Inventory <<< IS SUB-OBJECT
+    #                    'SNMP_SRC': 'Loopback0', <<< IS SUB-OBJECT
+    #                    'SNMP_KEY': SESSION_TK['ENV_snmp_key'] #System Enviro Var <<< IS SUB-OBJECT
+    #                    }
+    #                ]
+    #            }
+    #        ],
+
+
+    for item, objects in sync_getset_template.items():
+
+        if sync_j2rdr_status == False: # If status set to False on previous loop. do not proceed!
+            break
+
+        # print('ITEM = ' + item)
+        # print('OBJECTS = ' + str(objects))
+        for object in objects:
+            #print('OBJECT = ' + str(object))
+            j2rdr_status, j2rdr_log, j2rdr_list = j2rdr(SESSION_TK, YAML_TK, item, object)
+
+            for line in j2rdr_log:
+                sync_j2rdr_log.append(line)
+
+
+
+            if j2rdr_status == True:
+                sync_j2rdr_dict[item] = j2rdr_list
+                sync_j2rdr_status = True
+
+            else: # j2rdr_status == False:
+                sync_j2rdr_dict[item] = ''
+                sync_j2rdr_status = False
+
+    if SESSION_TK['ARG_debug'] == True:
+        print('\n**DEBUG (_network_borg_sync.py) : J2RDR Module Dictionary Returned:')
+        print(str(sync_j2rdr_dict))
+
+    return sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict
 
 # DIFFGEN (Compare)
 # REQ: SESSION_TK, YAML_TK, sync_confg_dict, sync_j2rdr_dict
@@ -407,27 +407,28 @@ def sync(SESSION_TK, YAML_TK):
             if sync_getset_status == True:
                 sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
 
-                # J2RDR (Template Render)
-                # REQ: SESSION_TK, YAML_TK, sync_getset_template
-                # RTN: sync_j2rdr_status, sync_j2rdr_dict
-                sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict = sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template)
+                # GETCFG (Current Configuration)
+                # REQ: SESSION_TK, YAML_TK, sync_getset_payload
+                # RTN: sync_confg_status, sync_confg_dict
+                sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict = sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload)
 
-                for line in sync_j2rdr_log:
+                for line in sync_getcfg_log:
                     sync_log.append(line)
 
-                if sync_j2rdr_status == True:
-                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = J2RDR Module Successful ' + u'\u2714')
+                if sync_getcfg_status == True:
+                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Successful ' + u'\u2714')
 
-                    # GETCFG (Current Configuration)
-                    # REQ: SESSION_TK, YAML_TK, sync_getset_payload
-                    # RTN: sync_confg_status, sync_confg_dict
-                    sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict = sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload)
+                    # J2RDR (Template Render)
+                    # REQ: SESSION_TK, YAML_TK, sync_getset_template
+                    # RTN: sync_j2rdr_status, sync_j2rdr_dict
+                    sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict = sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template)
 
-                    for line in sync_getcfg_log:
+                    for line in sync_j2rdr_log:
                         sync_log.append(line)
 
-                    if sync_getcfg_status == True:
-                        sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Successful ' + u'\u2714')
+                    if sync_j2rdr_status == True:
+                        sync_log.append(YAML_TK['YAML_fqdn'] + ': = J2RDR Module Successful ' + u'\u2714')
+
 
                         # DIFFGEN (Compare)
                         # REQ: SESSION_TK, YAML_TK, sync_confg_dict, sync_j2rdr_dict
@@ -460,11 +461,11 @@ def sync(SESSION_TK, YAML_TK):
                             sync_loop = False
 
                     else: # sync_getcyg_status == False:
-                        sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Failure ' + u'\u2717')
+                        sync_log.append(YAML_TK['YAML_fqdn'] + ': = J2RDR Module Failure ' + u'\u2717')
                         sync_loop = False
 
                 else: # sync_j2rdr_status == False:
-                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = J2RDR Module Failure ' + u'\u2717')
+                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Failure ' + u'\u2717')
                     sync_loop = False
 
             else: # sync_getset_status == False:

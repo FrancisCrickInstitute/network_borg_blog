@@ -22,18 +22,6 @@ import xml.dom.minidom
 
 from modules._network_borg_xtval import xtval
 
-payload = """
-<filter xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <routing-state xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
-    <routing-instance>
-      <ribs>
-        <rib/>
-      </ribs>
-    </routing-instance>
-  </routing-state>
-</filter>
-"""
-
 # MAIN
 if __name__ == '__main__':
 
@@ -52,21 +40,15 @@ if __name__ == '__main__':
 
     # connect to netconf agent
     with manager.connect(host=args.host,
-                         port=args.port,
                          username=args.username,
                          password=args.password,
+                         port='22',
                          timeout=90,
                          hostkey_verify=False,
-                         device_params={'name': 'csr'}) as m:
+                         device_params={'name': 'nexus'}) as m:
 
         # execute netconf operation
-        try:
-            raw_xml = m.exec_command(payload).xml
-            #data = ET.fromstring(response)
-        except:
-            pass
-
-        print(raw_xml)
+        raw_xml = m.exec_command({'show run | sec ospf'}).xml
 
         print ('\n\n##### PRETTY XML #####\n')
         #dict = []

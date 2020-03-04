@@ -114,14 +114,14 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
 
                 net_connect.find_prompt()
 
-                # Use Send Config Set to Send Command...
+                # From _network_borg_sync.py:sync_push() we get an obj list []
                 net_set = net_connect.send_config_set(obj)
 
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'
                 if err in net_set:
                     netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
-                        '] Response "' + obj + '" ERR: Invalid Command!')
+                        '] Response "' + str(obj) + '" ERR: Invalid Command!')
                     net_connect.disconnect()
                     break
 
@@ -130,13 +130,13 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
                 net_connect.disconnect()
 
                 netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
-                    '] Response && "' + obj + '" OK')
+                    '] Response && "' + str(obj) + '" OK')
                 netmko_status = True
                 break
 
         except Exception as error:
             netmko_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
-                '] Config Response: "' + obj + '" ERR: ' + str(error))
+                '] Config Response: "' + str(obj) + '" ERR: ' + str(error))
             netmko_status = False
 
     else:

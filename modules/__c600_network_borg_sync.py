@@ -1,5 +1,5 @@
 '''
-Network Borg Sync (Workflow) Module. Chapter 6.0.
+Network Borg Sync (Workflow) Module
 '''
 #!/usr/bin/env python3
 
@@ -18,6 +18,7 @@ from modules._network_borg_getset import getset
 from modules._network_borg_j2rdr import j2rdr
 from modules._network_borg_netmko import netmko
 from modules._network_borg_nxapi import nxapi
+from modules._network_borg_ncclient import ncclient
 from modules._network_borg_diffgen import diffgen
 
 # URLLIB3 package to diabled SSH warnings
@@ -96,6 +97,85 @@ def sync_getset(SESSION_TK, YAML_TK, sync_discvry_dict):
 
     return sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload
 
+def sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload):
+    '''
+    GETCFG (Current Configuration)
+    REQ: SESSION_TK, YAML_TK, sync_getset_payload
+    RTN: sync_getcfg_status, sync_getcfg_dict
+    '''
+    sync_getcfg_log = []
+
+    sync_getcfg_dict = {}
+    sync_getcfg_status = True
+
+    if YAML_TK['YAML_driver'] == 'ios': # Cisco IOS
+        netmko_mode = 'get'
+        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ': > GETCFG Module (IOS NetMiko) Initialised...')
+
+        for item, objects in sync_getset_payload.items():
+            for obj in objects:
+
+                if not sync_getcfg_status:
+                    # If status set to False on previous loop. do not proceed!
+                    break
+
+                netmko_status, netmko_log, netmko_list = \
+                    netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj['CMD'])
+
+                for line in netmko_log: # Append to Master Log
+                    sync_getcfg_log.append(line)
+
+                if netmko_status: # If Payload Valid, add to response_dict {}
+                    sync_getcfg_dict[item] = netmko_list
+                    sync_getcfg_status = True
+
+                else:
+                    sync_getcfg_dict[item] = ''
+                    sync_getcfg_status = False
+
+    elif YAML_TK['YAML_driver'] == 'nxos_ssh': # Cisco NXOS
+        nxapi_mode = 'get'
+        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ': > GETCFG Module (NX-OS NXAPI) Initialised...')
+
+        for item, objects in sync_getset_payload.items():
+            # print('ITEM = ' + item)
+            # print('OBJECTS = ' + str(objects))
+            for obj in objects:
+                # print('OBJ = ' + str(obj))
+
+                if not sync_getcfg_status:
+                    # If status set to False on previous loop. do not proceed!
+                    break
+
+                # Send the payload object to the NXAPI Module. Example object
+                # {'jsonrpc': '2.0', 'method': 'cli_ascii', 'params':
+                #     {'cmd': 'show run snmp', 'version': 1.2}, 'id': 2}
+
+                nxapi_status, nxapi_log, nxapi_list = \
+                    nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj['CMD'])
+
+                for line in nxapi_log: # Append to Global Log
+                    sync_getcfg_log.append(line)
+
+                if nxapi_status: # If Payload Valid, add to response_dict {}
+                    sync_getcfg_dict[item] = nxapi_list
+                    sync_getcfg_status = True
+
+                else:
+                    sync_getcfg_dict[item] = ''
+                    sync_getcfg_status = False
+
+    else:
+        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ':  * Driver ' + \
+            YAML_TK['YAML_driver'] + ' Not Supported!')
+        sync_getcfg_status = False
+
+    if SESSION_TK['ARG_debug']:
+        print('\n**DEBUG (_network_borg_sync.py) : GETCFG Dictionary Returned:')
+        print(sync_getcfg_dict)
+
+    return sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict
+
 def sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template):
     '''
     J2RDR (Template Render)
@@ -156,86 +236,6 @@ def sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template):
         print(str(sync_j2rdr_dict))
 
     return sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict
-
-def sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload):
-    '''
-    GETCFG (Current Configuration)
-    REQ: SESSION_TK, YAML_TK, sync_getset_payload
-    RTN: sync_getcfg_status, sync_getcfg_dict
-    '''
-    sync_getcfg_log = []
-
-    sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ': > GETCFG Module Initialised...')
-
-    sync_getcfg_dict = {}
-    sync_getcfg_status = True
-
-    if YAML_TK['YAML_driver'] == 'ios': # Cisco IOS
-        netmko_mode = 'get'
-        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ': * IOS NetMiko Method')
-
-        for item, objects in sync_getset_payload.items():
-            for obj in objects:
-
-                if not sync_getcfg_status:
-                    # If status set to False on previous loop. do not proceed!
-                    break
-
-                netmko_status, netmko_log, netmko_list = \
-                    netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj['CMD'])
-
-                for line in netmko_log: # Append to Master Log
-                    sync_getcfg_log.append(line)
-
-                if netmko_status: # If Payload Valid, add to response_dict {}
-                    sync_getcfg_dict[item] = netmko_list
-                    sync_getcfg_status = True
-
-                else:
-                    sync_getcfg_dict[item] = ''
-                    sync_getcfg_status = False
-
-    elif YAML_TK['YAML_driver'] == 'nxos_ssh': # Cisco NXOS
-        nxapi_mode = 'get'
-        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ': * NX-OS NXAPI Method')
-
-        for item, objects in sync_getset_payload.items():
-            # print('ITEM = ' + item)
-            # print('OBJECTS = ' + str(objects))
-            for obj in objects:
-                # print('OBJ = ' + str(obj))
-
-                if not sync_getcfg_status:
-                    # If status set to False on previous loop. do not proceed!
-                    break
-
-                # Send the payload object to the NXAPI Module. Example object
-                # {'jsonrpc': '2.0', 'method': 'cli_ascii', 'params':
-                #     {'cmd': 'show run snmp', 'version': 1.2}, 'id': 2}
-                nxapi_status, nxapi_log, nxapi_list = \
-                    nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj['CMD'])
-
-                for line in nxapi_log: # Append to Global Log
-                    sync_getcfg_log.append(line)
-
-                if nxapi_status: # If Payload Valid, add to response_dict {}
-                    sync_getcfg_dict[item] = nxapi_list
-                    sync_getcfg_status = True
-
-                else:
-                    sync_getcfg_dict[item] = ''
-                    sync_getcfg_status = False
-
-    else:
-        sync_getcfg_log.append(YAML_TK['YAML_fqdn'] + ':  * Driver ' + \
-            YAML_TK['YAML_driver'] + ' Not Supported!')
-        sync_getcfg_status = False
-
-    if SESSION_TK['ARG_debug']:
-        print('\n**DEBUG (_network_borg_sync.py) : GETCFG Dictionary Returned:')
-        print(sync_getcfg_dict)
-
-    return sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict
 
 def sync_diffgen(SESSION_TK, YAML_TK, sync_getcfg_dict, sync_j2rdr_dict):
     '''
@@ -313,16 +313,15 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
             netmko_mode = 'set'
 
             for item, objects in sync_diffgen_dict.items():
-
                 if not objects:
                     sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] No DIFF Found')
 
                 else:
                     sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] DIFF Found...')
 
-                for obj in objects:
+                    # Send the objects list [] to NetMiko Set Mode
                     netmko_status, netmko_log, netmko_list = \
-                        netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj)
+                        netmko(SESSION_TK, YAML_TK, netmko_mode, item, objects)
 
                     for line in netmko_log:
                         sync_push_log.append(line)
@@ -364,9 +363,9 @@ def sync_push(SESSION_TK, YAML_TK, sync_diffgen_dict):
                 else:
                     sync_push_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + '] DIFF Found...')
 
-                for obj in objects:
+                #for obj in objects:
                     nxapi_status, nxapi_log, nxapi_list = \
-                        nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj)
+                        nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, objects)
 
                     for line in nxapi_log:
                         sync_push_log.append(line)
@@ -433,31 +432,31 @@ def sync(SESSION_TK, YAML_TK):
             if sync_getset_status: # True
                 sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
 
-                # J2RDR (Template Render)
-                # REQ: SESSION_TK, YAML_TK, sync_getset_template
-                # RTN: sync_j2rdr_status, sync_j2rdr_dict
-                sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict = \
-                    sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template)
+                # GETCFG (Current Configuration)
+                # REQ: SESSION_TK, YAML_TK, sync_getset_payload
+                # RTN: sync_confg_status, sync_confg_dict
+                sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict = \
+                    sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload)
 
-                for line in sync_j2rdr_log:
+                for line in sync_getcfg_log:
                     sync_log.append(line)
 
-                if sync_j2rdr_status: # True
+                if sync_getcfg_status: # True
                     sync_log.append(YAML_TK['YAML_fqdn'] + \
-                        ': = J2RDR Module Successful ' + u'\u2714')
+                        ': = GETCFG Module Successful ' + u'\u2714')
 
-                    # GETCFG (Current Configuration)
-                    # REQ: SESSION_TK, YAML_TK, sync_getset_payload
-                    # RTN: sync_confg_status, sync_confg_dict
-                    sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict = \
-                        sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload)
+                    # J2RDR (Template Render)
+                    # REQ: SESSION_TK, YAML_TK, sync_getset_template
+                    # RTN: sync_j2rdr_status, sync_j2rdr_dict
+                    sync_j2rdr_status, sync_j2rdr_log, sync_j2rdr_dict = \
+                        sync_j2rdr(SESSION_TK, YAML_TK, sync_getset_template)
 
-                    for line in sync_getcfg_log:
+                    for line in sync_j2rdr_log:
                         sync_log.append(line)
 
-                    if sync_getcfg_status: # True
+                    if sync_j2rdr_status: # True
                         sync_log.append(YAML_TK['YAML_fqdn'] + \
-                            ': = GETCFG Module Successful ' + u'\u2714')
+                            ': = J2RDR Module Successful ' + u'\u2714')
 
                         # DIFFGEN (Compare)
                         # REQ: SESSION_TK, YAML_TK, sync_confg_dict, sync_j2rdr_dict
@@ -498,11 +497,11 @@ def sync(SESSION_TK, YAML_TK):
 
                     else: # sync_getcyg_status == False:
                         sync_log.append(YAML_TK['YAML_fqdn'] + \
-                            ': = GETCFG Module Failure ' + u'\u2717')
+                            ': = J2RDR Module Failure ' + u'\u2717')
                         sync_loop = False
 
                 else: # sync_j2rdr_status == False:
-                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = J2RDR Module Failure ' + u'\u2717')
+                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Failure ' + u'\u2717')
                     sync_loop = False
 
             else: # sync_getset_status == False:
