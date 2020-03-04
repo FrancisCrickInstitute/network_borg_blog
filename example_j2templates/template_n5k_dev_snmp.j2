@@ -1,19 +1,10 @@
 snmp-server contact My Team, My Company, My Department, My Number
-{%- if VAR0 is defined %}
-snmp-server location {{ VAR0 }}
-{%- endif %}
+snmp-server location {{ SNMP_LOC }}
 snmp-server aaa-user cache-timeout 900
-{%- if VAR1 is defined %}
-snmp-server source-interface traps {{ VAR1 }}
-snmp-server source-interface informs {{ VAR1 }}
-{%- else %}
-snmp-server source-interface trap Loopback0
-snmp-server source-interface inform Loopback0
-{%- endif %}
-{%- if VAR2 is defined %}
-snmp-server host 10.1.2.3 traps version 2c {{ VAR2 }}
-snmp-server host 10.3.2.1 traps version 2c {{ VAR2 }}
-{%- endif %}
+snmp-server source-interface traps {{ SNMP_SRC }}
+snmp-server source-interface informs {{ SNMP_SRC }}
+snmp-server host 10.1.2.3 traps version 2c {{ SNMP_KEY }}
+snmp-server host 10.3.2.1 traps version 2c {{ SNMP_KEY }}
 snmp-server enable traps callhome event-notify
 snmp-server enable traps callhome smtp-send-fail
 snmp-server enable traps cfs state-change-notif
@@ -35,7 +26,4 @@ snmp-server enable traps stpx root-inconsistency
 snmp-server enable traps stpx loop-inconsistency
 snmp-server enable traps system Clock-change-notification
 snmp-server enable traps syslog message-generated
-{%- if VAR2 is defined %}
-snmp-server community {{ VAR2 }} group network-operator
-snmp-server community {{ VAR2 }} use-acl XYZ
-{%- endif %}
+snmp-server community {{ SNMP_KEY }} use-acl XYZ

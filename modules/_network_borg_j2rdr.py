@@ -49,7 +49,7 @@ def j2rdr(SESSION_TK, YAML_TK, item, obj):
         #        ],
 
         # Strictly enforce rendering with variables. If variable does not exist
-        # bomb out of try: To test, comment our a VAR in the _network_borg_getset.py:
+        # bomb out of try: To test, comment out a VAR in the _network_borg_getset.py:
         # template_set. e.g. comment out SNMP_LOC from C4KS8 group will generate
         # a J2 Render error.
         env = Environment(undefined=StrictUndefined)

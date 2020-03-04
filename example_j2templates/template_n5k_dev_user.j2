@@ -1,8 +1,6 @@
 no feature telnet
 feature http-server
-{%- if VAR0 is defined %}
-username devadmin password 0 {{ VAR0 }} role vdc-admin
-{%- endif %}
+username devadmin password 0 {{ ENAB_PW }} role vdc-admin
 username devadmin passphrase  lifetime 99999 warntime 14 gracetime 3
 
 banner motd # --------------------------------------------------------------------------------
