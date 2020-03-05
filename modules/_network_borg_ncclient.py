@@ -6,14 +6,10 @@ Python3 script to get and scrape Cisco IOS configuration using NETCONF Client (n
 __author__ = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__ = 'None. Enjoy :-)'
 
-from ncclient import manager
-import xmltodict
-import pprint
-import xml.dom.minidom
-import re
-
-LOGDIR = '../LOGS/network_borg/'
-pp = pprint.PrettyPrinter(depth=6)
+from ncclient import manager # Required for NCCLIENT connection
+import xmltodict # Required to convert XML toPython DICT {
+import pprint # Required to PrettyPrint complex XML, OrderedDict structures
+import re # Required for garbx()
 
 def garbx(raw_response):
     '''
@@ -45,6 +41,13 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
     NetMiko Function
     '''
 
+    ncclient_log = []
+    ncclient_list = []
+    ncclient_status = False
+
+    # Define Pretty Print format
+    pp = pprint.PrettyPrinter(depth=6)
+
     if SESSION_TK['ARG_debug']: # True
         print('\n**DEBUG (_network_borg_ncclient.py) : Payloads Received:')
         print('SESSION_TK:       ' + str(SESSION_TK))
@@ -62,12 +65,11 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
         driver = 'csr'
     elif YAML_TK['YAML_driver'] == 'nxos_ssh':
         driver = 'nexus'
+    else:
+        ncclient_log.append(YAML_TK['YAML_fqdn'] + ': YAML Driver not supported!')
+        return ncclient_status, ncclient_log, ncclient_list
 
-    ncclient_log = []
-    ncclient_list = []
-    ncclient_status = False
-
-    # If NetMiko Mode = GET (i.e. send show command)
+    # If NCCLIENT Mode = GET (i.e. send show command)
     if ncclient_mode == 'get':
         try:
 

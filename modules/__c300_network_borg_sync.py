@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Python3 Network Borg Syncronisation Module. Chapter 3.3.
+# Python3 Network Borg Syncronisation Module.
 
 __author__      = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__   = 'None. Enjoy :-)'
@@ -15,9 +15,9 @@ import json # Required for NXAPI JSON RPC
 # sub-folder(s).
 from modules._network_borg_discvry import discvry
 from modules._network_borg_getset import getset
-from modules._network_borg_j2rdr import j2rdr
 from modules._network_borg_netmko import netmko
 from modules._network_borg_nxapi import nxapi
+from modules._network_borg_j2rdr import j2rdr
 
 # URLLIB3 package to diabled SSH warnings
 requests.packages.urllib3.disable_warnings(

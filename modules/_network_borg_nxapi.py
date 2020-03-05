@@ -94,10 +94,17 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
                 verify=False
             ).json()
 
+            if SESSION_TK['ARG_debug']: # True
+                print('GET RESPONSE:     ' + str(get_response))
+
             if 'result' in str(get_response): # 'result' implies OK.
                 # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}
                 # Parse through garbx to clean msg blob
                 nxapi_list = garbx(get_response)
+
+                if SESSION_TK['ARG_debug']: # True
+                    print('\n**DEBUG (_network_borg_nxapi.py: GET) : Filtered Response:')
+                    print(nxapi_list)
 
                 nxapi_log.append(YAML_TK['YAML_fqdn'] + ': - [' + str(item) + \
                     '] Payload (Get) Successful')
@@ -160,7 +167,7 @@ def nxapi(SESSION_TK, YAML_TK, nxapi_mode, item, obj):
                 ).json()
 
                 if SESSION_TK['ARG_debug']: # True
-                    print('RESPONSE:         ' + str(set_response))
+                    print('SET RESPONSE:     ' + str(set_response))
 
                 if 'result' in str(set_response):
                     # Example Response - {'jsonrpc': '2.0', 'result': {{'msg': 'CROPPED''}}, 'id': 2}

@@ -140,10 +140,10 @@ def main():
         '''
 
         # yaml_dict will look something like (structured for understanding)
-        # {'BP-L08DC-DEV-DSW-01.thecrick.org':
+        # {'ROUTER-N7K-A-01.company.x':
         #   {'NAPALM DRIVER': 'nxos_ssh',
         #    'LOC': 'Building X, Floor Y, Room Z, CAB A',
-        #    'DOMAIN': 'thecrick.org',
+        #    'DOMAIN': 'company.x',
         #    'ENV': 'Development'
         #   }
         # }

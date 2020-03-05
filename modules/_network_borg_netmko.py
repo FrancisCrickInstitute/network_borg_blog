@@ -8,15 +8,20 @@ __copyright__ = 'None. Enjoy :-)'
 
 from netmiko import ConnectHandler
 
-LOGDIR = '../LOGS/network_borg/'
-
 def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
     '''
     NetMiko Function
     '''
 
+    # Define location to write NetMiko logs.
+    LOGDIR = '../LOGS/network_borg/'
+
+    netmko_log = []
+    netmko_list = []
+    netmko_status = False
+
     if SESSION_TK['ARG_debug']: # True
-        print('\n**DEBUG (_network_borg_netmko.py) : Payloads Received:')
+        print('\n**DEBUG (_network_borg_netmko.py) : Payload Received:')
         print('SESSION_TK:       ' + str(SESSION_TK))
         print('YAML_TK:          ' + str(YAML_TK))
         print('ITEM:             ' + item)
@@ -32,10 +37,9 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
         driver = 'cisco_ios'
     elif YAML_TK['YAML_driver'] == 'nxos_ssh':
         driver = 'cisco_nxos'
-
-    netmko_log = []
-    netmko_list = []
-    netmko_status = False
+    else:
+        netmko_log.append(YAML_TK['YAML_fqdn'] + ': YAML Driver not supported!')
+        return netmko_status, netmko_log, netmko_list
 
     # If NetMiko Mode = GET (i.e. send show command)
     if netmko_mode == 'get':
@@ -64,6 +68,10 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
                 net_get = net_connect.send_command(obj)
 
                 net_connect.disconnect()
+
+                if SESSION_TK['ARG_debug']: # True
+                    print('\n**DEBUG (_network_borg_netmko.py: GET) : Payload Response:')
+                    print(net_get)
 
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'
@@ -116,6 +124,10 @@ def netmko(SESSION_TK, YAML_TK, netmko_mode, item, obj):
 
                 # From _network_borg_sync.py:sync_push() we get an obj list []
                 net_set = net_connect.send_config_set(obj)
+
+                if SESSION_TK['ARG_debug']: # True
+                    print('\n**DEBUG (_network_borg_netmko.py: SET) : Payload Response:')
+                    print(net_get)
 
                 # Capture input error. i.e. command is invalid
                 err = '% Invalid'

@@ -1,5 +1,5 @@
 '''
-Python3 script to render Jinja2 given an item and object
+Python3 script to render Jinja2 template given an item and object
 '''
 #!/usr/bin/env python
 

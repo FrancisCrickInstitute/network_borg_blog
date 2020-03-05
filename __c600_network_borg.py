@@ -47,14 +47,6 @@ class PrintColours:
     CWHITETXTYELLOWBG = '\033[1;37;43m' # White Text, Yellow Background
     CWHITETXTCYANBG = '\033[1;37;46m' # White Text, Cyan Background
 
-# Needed for posting to Slack
-#with open("../network_config/server.json", "rt") as server_f:
-#    credentials = json.load(server_f)
-#OAUTH = credentials["OAUTH_TOKEN_PROD"]
-#SLACKCHANNEL = credentials["CHANNEL"]
-#POST = credentials["POST"]
-#client = slack.WebClient(token=OAUTH)
-
 def main():
     ''' MAIN FUNCTION '''
 
@@ -145,10 +137,10 @@ def main():
         ###
 
         # yaml_dict will look something like (structured for understanding)
-        # {'BP-L08DC-DEV-DSW-01.thecrick.org':
+        # {'ROUTER-N7K-A-01.company.x':
         #   {'NAPALM DRIVER': 'nxos_ssh',
         #    'LOC': 'Building X, Floor Y, Room Z, CAB A',
-        #    'DOMAIN': 'thecrick.org',
+        #    'DOMAIN': 'company.x',
         #    'ENV': 'Development'
         #   }
         # }

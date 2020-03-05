@@ -188,4 +188,8 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 - Re-ordered _network_borg_sync.py so GETCFG (network_borg_netmko/nxapi.py) 'get' mode happens before J2 Render (network_borg_j2rdr.py). Preempting future requires to GET more variables to be used in J2RDR.  
 - Re-write of _network_borg_j2rdr.py to call the J2 Render using the Python ** keyword arguments. Means we can send as key value pairs as opposed to messily re-naming VARS to VAR0, 1, 2 etc. J2 Template now has the key reference variable.
 - Re-write of _network_borg_j2rdr.py to strictly enforce rendering with variables. If J2 Render attempts to render a file with a missing VAR, bomb out and generate error.
-- Added NCCLIENT to GETCFG. 
+- Added NCCLIENT to GETCFG.
+
+### Version 0.9.9.6
+- Stripped libraries not used in _network_borg_ncclient.py.
+- Added additional logic to _network_borg_ncclient.py and _network_borg_netmko.py to handle drivers which are not supported. 
