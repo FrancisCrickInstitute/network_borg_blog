@@ -1,0 +1,66 @@
+---
+####################################################
+# FLOATING GROUPS
+
+DEV:
+  data:
+    nodata: /"/"
+
+PROD:
+  data:
+    nodata: /"/"
+
+PP: # Pre-Production
+  data:
+    nodata: /"/"
+
+####################################################
+# ROLE GROUPS
+
+ASW: # Access Switch
+  data:
+    nodata: /"/"
+
+MNR: # Main Network Router
+  data:
+    nodata: /"/"
+
+DCS: # Data Centre Switch
+  data:
+    nodata: /"/"
+
+####################################################
+# MODEL GROUPS
+
+C3K: # WS-C3850-48F-S
+  data:
+    img: cat3k_caa-universalk9.16.06.05.SPA.bin
+    imgks: na
+    ver: 16.6.5 # EVEREST
+
+N5K:
+  data:
+    img: n6000-uk9.7.3.5.N1.1.bin
+    imgks: n6000-uk9-kickstart.7.3.5.N1.1.bin
+    ver: 7.3(5)N1(1)
+
+N7K:
+  data:
+    img: n7700-s2-dk9.8.3.2.bin
+    imgks: n7700-s2-kickstart.8.3.2.bin
+    ver: 8.3(2)
+
+####################################################
+# BUILDING GROUPS
+
+BUILDING_A: #
+  data:
+    nodata: /"/"
+
+BUILDING_B: #
+  data:
+    nodata: /"/"
+
+BUILDING_X: #
+  data:
+    nodata: /"/"

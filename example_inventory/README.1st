@@ -1,0 +1,33 @@
+This is an example of a YAML Inventory Folder. For the Network Borg to work,
+your actual inventory must reside in a folder called network_inventory which
+is one folder level up! (or whatever is defined in the config.yaml).
+
+This is so we could maintain our actual Inventory in a Private REPO but allow 
+continued development of this public REPO.
+
+The config.yaml file is configured as follows:
+
+<SOF>
+---
+core:
+    num_workers: 1
+
+inventory:
+    plugin: nornir.plugins.inventory.simple.SimpleInventory
+    options:
+        host_file: "../network_inventory/hosts.yaml"
+        group_file: "../network_inventory/groups.yaml"
+        defaults_file: "../network_inventory/defaults.yaml"
+<EOF>
+
+FrancisCrickInstitute
+- network_borg_blog (Public Repo)
+-- example_inventory
+--- groups.yaml
+--- hosts.yaml
+--- defaults.yaml
+--- README.1st (this file)
+- network_inventory (Private Repo)
+-- groups.yaml (referenced group_file)
+-- hosts.yaml (referenced host_file)
+-- defaults.yaml (referenced defaults_file)

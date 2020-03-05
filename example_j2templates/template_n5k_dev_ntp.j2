@@ -1,0 +1,5 @@
+ntp server 10.9.9.9 use-vrf management
+ntp server 10.8.8.8 prefer use-vrf management
+ntp source-interface  Vlan2901
+ntp authentication-key 1 md5 {{ NTP_KEY }} 7
+ntp logging

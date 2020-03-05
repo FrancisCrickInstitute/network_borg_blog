@@ -1,0 +1,108 @@
+---
+PP-SWITCH-01:
+  groups:
+    - PP
+    - C3K
+    - BUILDING_X
+  data:
+    loc: Development Lab, Building X
+    driver: ios
+    domain: company.x
+    env: Development
+
+PP-ROUTER-01:
+  groups:
+    - PP
+    - C3K
+    - BUILDING_X
+  data:
+    loc: Development Lab, Building X
+    driver: ios
+    domain: company.x
+    env: Development
+
+ROUTER-N7K-A-01:
+  groups:
+    - PROD
+    - BUILDING_A
+    - N7K
+  data:
+    loc: Building A, Floor X, Room Y, CAB Z
+    driver: nxos_ssh
+    domain: company.x
+    env: Production
+    vdcs:
+      - ROUTER-VDC-A-01
+
+ROUTER-N7K-B-02:
+  groups:
+    - PROD
+    - BUILDING_B
+    - N7K
+  data:
+    loc: Building B, Floor X, Room Y, CAB Z
+    driver: nxos_ssh
+    domain: company.x
+    env: Production
+
+ROUTER-VDC-A-01:
+  groups:
+    - PROD
+    - BUILDING_A
+    - MNR
+  data:
+    loc: Building A, Floor X, Room Y, CAB Z
+    driver: ios
+    domain: company.x
+    env: Production
+    vrfs:
+      - VRF-A
+      - VRF-B
+
+PROD-SWITCH-B-01:
+  groups:
+    - PROD
+    - ASW
+    - BUILDING_B
+    - C3K
+  data:
+    loc: Building B, Floor X, Room Y, CAB Z
+    driver: ios
+    domain: company.x
+    env: Production
+
+PROD-SWITCH-B-02:
+  groups:
+    - PROD
+    - ASW
+    - BUILDING_B
+    - C3K
+  data:
+    loc: Building B, Floor Y, Room Z, CAB A
+    driver: ios
+    domain: company.x
+    env: Production
+
+PROD-SWITCH-X-01:
+  groups:
+    - PROD
+    - ASW
+    - BUILDING_X
+    - C3K
+  data:
+    loc: Building B, Floor Y, Room Z, CAB A
+    driver: ios
+    domain: company.x
+    env: Production
+
+PROD-SWITCH-N5K-01:
+  groups:
+    - PROD
+    - DCS
+    - BUILDING_X
+    - N5K
+  data:
+    loc: Building X, Floor Y, Room Z, CAB A
+    driver: nxos_ssh
+    domain: company.x
+    env: Production

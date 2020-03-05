@@ -1,0 +1,20 @@
+This is an example of a Jinja2 Templates Folder. For the Network Borg to work,
+your actual templates must reside in a folder called network_j2templates which
+is one folder level up!
+
+This is so we could maintain our actual templates in a Private REPO but allow
+continued development of this public REPO.
+
+_network_borg_j2rdr.py references:
+
+file = '../network_j2templates/template_*.j2'
+
+FrancisCrickInstitute
+- network_borg_blog (Public Repo) [Working Folder]
+-- modules
+--- _network_borg_j2rdr.py [file = '../network_j2templates/template_*.j2' Defined]
+-- example_j2templates
+--- README.1st (this file)
+--- template_*.j2
+-- network_j2templates (Private Repo)
+-- template_*.j2 (referenced file)

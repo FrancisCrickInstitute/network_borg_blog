@@ -1,0 +1,16 @@
+no feature telnet
+feature http-server
+username devadmin password 0 {{ ENAB_PW }} role vdc-admin
+username devadmin passphrase  lifetime 99999 warntime 14 gracetime 3
+
+banner motd # --------------------------------------------------------------------------------
+
+This system is solely for the use of authorised users only.
+Unauthorised access is prohibited and may lead to criminal proceedings.
+This device may contain privileged information and must not be read, copied, or
+otherwise by any persons not deemed to be authorised.
+All communication to this system is monitored and recorded.
+Users accessing this device imply express consent to the monitoring and
+recording of all activities.
+-------------------------------------------------------------------------------
+#

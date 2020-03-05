@@ -1,0 +1,8 @@
+snmp-server trap-source {{ SNMP_SRC }}
+snmp-server location {{ SNMP_LOC }}
+snmp-server contact My Team, My Company, My Department, My Number
+snmp-server enable traps snmp linkdown linkup coldstart warmstart
+snmp-server enable traps mac-notification change move
+snmp-server host 10.1.2.3 vrf Mgmt-vrf version 2c {{ SNMP_KEY }}
+snmp-server host 10.3.2.1 vrf Mgmt-vrf version 2c {{ SNMP_KEY }}
+snmp-server community {{ SNMP_KEY }} RO
