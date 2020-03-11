@@ -88,7 +88,7 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
                 port=dport,
                 timeout=90,
                 hostkey_verify=False,
-                device_params={'name': 'csr'}) as m:
+                device_params=({'name': driver}) as m:
 
                 #for capabilities in m.server_capabilities:
                 #    print(capabilities)
