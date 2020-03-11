@@ -82,7 +82,7 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
             with manager.connect(host=YAML_TK['YAML_fqdn'],
                 username=SESSION_TK['ENV_user_un'],
                 password=SESSION_TK['ENV_user_pw'],
-                port=830,
+                port=dport,
                 timeout=90,
                 hostkey_verify=False,
                 device_params={'name': driver}) as m:
