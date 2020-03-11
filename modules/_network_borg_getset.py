@@ -273,7 +273,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
                     'SNMP':
                         [
                             {
-                                'CMD': 'show run | inc snmp'
+                                'CMD': 'show run'
                             }
                         ],
                     'NTP':
