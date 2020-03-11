@@ -192,4 +192,7 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 
 ### Version 0.9.9.6
 - Stripped libraries not used in _network_borg_ncclient.py.
-- Added additional logic to _network_borg_ncclient.py and _network_borg_netmko.py to handle drivers which are not supported. 
+- Added additional logic to _network_borg_ncclient.py and _network_borg_netmko.py to handle drivers which are not supported.
+
+### Version 0.9.9.7
+- Updated NETCONF files

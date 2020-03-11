@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
         # execute netconf operation
         try:
-            raw_xml = m.get(payload).xml
+            raw_xml = m.exec_command({'show version'})
             #data = ET.fromstring(response)
         except:
             pass
