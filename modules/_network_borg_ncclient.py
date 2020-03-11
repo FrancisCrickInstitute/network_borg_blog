@@ -10,6 +10,7 @@ from ncclient import manager # Required for NCCLIENT connection
 import xmltodict # Required to convert XML toPython DICT {
 import pprint # Required to PrettyPrint complex XML, OrderedDict structures
 import re # Required for garbx()
+import ipdb
 
 def garbx(raw_response):
     '''
@@ -75,6 +76,8 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
     # If NCCLIENT Mode = GET (i.e. send show command)
     if ncclient_mode == 'get':
         try:
+
+            ipdb.set_trace()
 
             # Initialise connection to host with ncclient
             with manager.connect(host=YAML_TK['YAML_fqdn'],
