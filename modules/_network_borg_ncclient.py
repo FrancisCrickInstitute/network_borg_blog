@@ -79,6 +79,8 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
 
             ipdb.set_trace()
 
+            print(driver)
+
             # Initialise connection to host with ncclient
             with manager.connect(host=YAML_TK['YAML_fqdn'],
                 username=SESSION_TK['ENV_user_un'],
@@ -86,7 +88,7 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
                 port=dport,
                 timeout=90,
                 hostkey_verify=False,
-                device_params={'name':driver}) as m:
+                device_params={'name': 'csr'}) as m:
 
                 #for capabilities in m.server_capabilities:
                 #    print(capabilities)
