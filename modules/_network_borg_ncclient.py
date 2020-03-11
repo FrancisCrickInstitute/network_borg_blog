@@ -63,8 +63,11 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
     # for future reference,
     if YAML_TK['YAML_driver'] == 'ios':
         driver = 'csr'
+        dport = '830'
     elif YAML_TK['YAML_driver'] == 'nxos_ssh':
         driver = 'nexus'
+        dport = '22'
+
     else:
         ncclient_log.append(YAML_TK['YAML_fqdn'] + ': YAML Driver not supported!')
         return ncclient_status, ncclient_log, ncclient_list
@@ -77,7 +80,7 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
             with manager.connect(host=YAML_TK['YAML_fqdn'],
                 username=SESSION_TK['ENV_user_un'],
                 password=SESSION_TK['ENV_user_pw'],
-                port='22',
+                port=dport,
                 timeout=90,
                 hostkey_verify=False,
                 device_params={'name': driver}) as m:
