@@ -76,11 +76,7 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
     # If NCCLIENT Mode = GET (i.e. send show command)
     if ncclient_mode == 'get':
         try:
-
             ipdb.set_trace()
-
-            print(driver)
-            print(dport)
 
             # Initialise connection to host with ncclient
             with manager.connect(host=YAML_TK['YAML_fqdn'],
