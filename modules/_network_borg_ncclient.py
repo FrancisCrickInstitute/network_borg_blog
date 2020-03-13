@@ -10,11 +10,10 @@ from ncclient import manager # Required for NCCLIENT connection
 import xmltodict # Required to convert XML toPython DICT {
 import pprint # Required to PrettyPrint complex XML, OrderedDict structures
 import re # Required for garbx()
-import ipdb
 
 def garbx(raw_response):
     '''
-    NCCLIENT Garbarator Function. Extracts the <data> key value from the XML response
+    NCCLIENT Garbarator Function. Extracts the <data> key value from the XMLTODICT response
     '''
     filtered_response = raw_response['rpc-reply']['data']
 
@@ -60,17 +59,16 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
     # Driver Matrix
     # NAPALM Driver 'ios' = NCCLIENT Driver 'cisco_ios'
     # NAPALM Driver 'nxos_ssh' = NCCLIENT Driver 'nexus'
-    # Only IOS uses NetMiko so NX-OS is surplus to requirements but retained
-    # for future reference,
+
     if YAML_TK['YAML_driver'] == 'ios':
         driver = 'csr'
         dport = 830
     elif YAML_TK['YAML_driver'] == 'nxos_ssh':
         driver = 'nexus'
         dport = 22
-
     else:
-        ncclient_log.append(YAML_TK['YAML_fqdn'] + ': YAML Driver not supported!')
+        ncclient_log.append(YAML_TK['YAML_fqdn'] + \
+            ': YAML Driver ' + YAML_TK['YAML_driver'] + ' not supported by NCCLIENT')
         return ncclient_status, ncclient_log, ncclient_list
 
     # If NCCLIENT Mode = GET (i.e. send show command)
@@ -87,8 +85,6 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
 
                 #for capabilities in m.server_capabilities:
                 #    print(capabilities)
-
-                ipdb.set_trace()
 
                 # Get the RAW XML response which
                 raw_xml = m.exec_command({obj}).xml
@@ -119,6 +115,17 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
             ncclient_log.append(YAML_TK['YAML_fqdn'] + ': - [' + item + \
             '] Payload "' + obj + '" ERR: ' + str(error))
             ncclient_status = False
+
+            if YAML_TK['YAML_driver'] == 'ios':
+                ncclient_log.append(YAML_TK['YAML_fqdn'] + ': NCCLIENT Error!')
+                ncclient_log.append(YAML_TK['YAML_fqdn'] + \
+                    ': *** netconf-yang required on ' + YAML_TK['YAML_fqdn'] + ' ***:')
+                ncclient_log.append('netconf-yang')
+                ncclient_log.append('netconf-yang ssh port 830')
+                ncclient_log.append('aaa authorization exec default local !*')
+                ncclient_log.append('!* netconf-yang requires a local username @ priv15!')
+                ncclient_log.append('This may break if aaa authentication login method')
+                ncclient_log.append('is tacacs+ or radius!')
 
     else:
         ncclient_log.append(YAML_TK['YAML_fqdn'] + ': NCCLIENT Mode Not Defined!')

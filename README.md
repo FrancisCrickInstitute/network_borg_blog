@@ -196,3 +196,6 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 
 ### Version 0.9.9.7
 - Updated NETCONF files
+
+### Version 0.9.9.8
+- Improved reporting in network_borg_ncclient.py with commands required to enable netconf-yang on IOS-XE. 

@@ -32,6 +32,7 @@ payload = """
 </filter>
 """
 
+# MAIN
 if __name__ == '__main__':
 
     parser = ArgumentParser(description='Usage:')
@@ -43,7 +44,7 @@ if __name__ == '__main__':
                         help="Device Username (netconf agent username)")
     parser.add_argument('-p', '--password', type=str, required=True,
                         help="Device Password (netconf agent password)")
-    parser.add_argument('--port', type=int, default=830,
+    parser.add_argument('--port', type=int, default=22,
                         help="Netconf agent port")
     args = parser.parse_args()
 
@@ -54,11 +55,11 @@ if __name__ == '__main__':
                          password=args.password,
                          timeout=90,
                          hostkey_verify=False,
-                         device_params={'name': 'csr'}) as m:
+                         device_params={'name': 'nexus'}) as m:
 
         # execute netconf operation
         try:
-            raw_xml = m.get(payload).xml
+            raw_xml = m.get('show ip route').xml
             #data = ET.fromstring(response)
         except:
             pass
