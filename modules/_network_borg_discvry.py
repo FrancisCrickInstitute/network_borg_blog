@@ -22,7 +22,7 @@ def discvry(SESSION_TK, YAML_TK):
 
     # Initialise Dictionaries
     discvry_log = []
-    discvry_dict = {}
+    HOST_TK = {}
 
     discvry_log.append(YAML_TK['YAML_fqdn'] + ': * NAPALM Discovery Started...')
     discvry_status = False # Unless otherwise overwritten
@@ -46,14 +46,14 @@ def discvry(SESSION_TK, YAML_TK):
         # N77-C7710
         if host_facts_model.find('Nexus7700') != -1:
             try:
-                # Build discvry_dict from NAPALM fact,
-                discvry_dict['VERSION'] = host_facts['os_version']
+                # Build HOST_TK from NAPALM fact,
+                HOST_TK['VERSION'] = host_facts['os_version']
                 # EXAMPLE RETURN: 8.3(2). No need to strip
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'N7K'
-                discvry_dict['INT'] = host_facts['interface_list']
-                discvry_dict['CFG'] = host_config
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'N7K'
+                HOST_TK['INT'] = host_facts['interface_list']
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -62,18 +62,18 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # N5K-C5696Q
         elif host_facts_model.find('Nexus 5696') != -1:
             try:
-                # Build discvry_dict from NAPALM fact,
-                discvry_dict['VERSION'] = host_facts['os_version']
+                # Build HOST_TK from NAPALM fact,
+                HOST_TK['VERSION'] = host_facts['os_version']
                 # EXAMPLE RETURN: 7.3(3)N1(1). No need to strip
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'N6K'
-                discvry_dict['CFG'] = host_config
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'N6K'
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -82,19 +82,19 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # N5K-C5548UP
         elif host_facts_model.find('Nexus5548') != -1:
             try:
-                # Build discvry_dict from NAPALM fact,
-                discvry_dict['VERSION'] = host_facts['os_version']
+                # Build HOST_TK from NAPALM fact,
+                HOST_TK['VERSION'] = host_facts['os_version']
                 # EXAMPLE RETURN: 5.2(1)N1(9b). No need to strip
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['INT'] = host_facts['interface_list']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'N5K'
-                discvry_dict['CFG'] = host_config
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['INT'] = host_facts['interface_list']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'N5K'
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -103,7 +103,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # WS-C3850
         elif host_facts_model.find('WS-C3850') != -1:
@@ -114,18 +114,18 @@ def discvry(SESSION_TK, YAML_TK):
                 # Get string between 'Version ' and ' '
                 host_facts_ver_major = ((version_string.split('Version '))[1].split('.')[0])
                 if host_facts_ver_major == '16':
-                    discvry_dict['VERSION'] = ((version_string.split('Version '))[1].split(',')[0])
+                    HOST_TK['VERSION'] = ((version_string.split('Version '))[1].split(',')[0])
                 elif host_facts_ver_major == '03':
-                    discvry_dict['VERSION'] = ((version_string.split('Version '))[1].split(' ')[0])
+                    HOST_TK['VERSION'] = ((version_string.split('Version '))[1].split(' ')[0])
                 else:
-                    discvry_dict['VERSION'] = 'UNKNOWN'
+                    HOST_TK['VERSION'] = 'UNKNOWN'
 
-                # Build discvry_dict from NAPALM fact,
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'C3K'
-                discvry_dict['INT'] = host_facts['interface_list']
-                discvry_dict['CFG'] = host_config
+                # Build HOST_TK from NAPALM fact,
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'C3K'
+                HOST_TK['INT'] = host_facts['interface_list']
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -134,7 +134,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # WS-C4500X-32
         elif host_facts_model.find('4500X') != -1:
@@ -143,12 +143,12 @@ def discvry(SESSION_TK, YAML_TK):
                 # EXAMPLE RETURN: "IOS-XE Software, Catalyst 4500 L3 Switch Software
                 # (cat4500e-UNIVERSALK9-M), Version 03.06.07.E RELEASE SOFTWARE (fc3)""
                 # Get string between 'Version ' and ' '
-                discvry_dict['VERSION'] = ((version_string.split('Version '))[1].split(' ')[0])
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'C4KX'
-                discvry_dict['INT'] = host_facts['interface_list']
-                discvry_dict['CFG'] = host_config
+                HOST_TK['VERSION'] = ((version_string.split('Version '))[1].split(' ')[0])
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'C4KX'
+                HOST_TK['INT'] = host_facts['interface_list']
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -157,7 +157,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # WS-C4510R+E
         elif host_facts_model.find('4510R') != -1:
@@ -166,12 +166,12 @@ def discvry(SESSION_TK, YAML_TK):
                 # EXAMPLE RETURN: "IOS-XE Software, Catalyst 4500 L3 Switch Software
                 # (cat4500es8-UNIVERSALK9-M), Version 03.07.03.E RELEASE SOFTWARE (fc3)""
                 # Get string between 'Version ' and ' '
-                discvry_dict['VERSION'] = ((version_string.split('Version '))[1].split(' ')[0])
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'C4KS8'
-                discvry_dict['INT'] = host_facts['interface_list']
-                discvry_dict['CFG'] = host_config
+                HOST_TK['VERSION'] = ((version_string.split('Version '))[1].split(' ')[0])
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'C4KS8'
+                HOST_TK['INT'] = host_facts['interface_list']
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -180,7 +180,7 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # C6807-XL
         elif host_facts_model.find('C6807-XL') != -1:
@@ -189,12 +189,12 @@ def discvry(SESSION_TK, YAML_TK):
                 # EXAMPLE RETURN: "s2t54 Software (s2t54-ADVENTERPRISEK9_NPE-M),
                 # Version 15.1(2)SY4a, RELEASE SOFTWARE (fc1)""
                 # Get string between 'Version ' and ' '
-                discvry_dict['VERSION'] = ((version_string.split('Version '))[1].split(',')[0])
-                discvry_dict['VENDOR'] = host_facts['vendor']
-                discvry_dict['MODEL'] = host_facts['model']
-                discvry_dict['GROUP'] = 'C6K'
-                discvry_dict['INT'] = host_facts['interface_list']
-                discvry_dict['CFG'] = host_config
+                HOST_TK['VERSION'] = ((version_string.split('Version '))[1].split(',')[0])
+                HOST_TK['VENDOR'] = host_facts['vendor']
+                HOST_TK['MODEL'] = host_facts['model']
+                HOST_TK['GROUP'] = 'C6K'
+                HOST_TK['INT'] = host_facts['interface_list']
+                HOST_TK['CFG'] = host_config
                 # Got this far in the try: statement so everything must be OK
                 discvry_status = True
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Successfully Discovered')
@@ -203,15 +203,15 @@ def discvry(SESSION_TK, YAML_TK):
                 discvry_status = False
                 discvry_log.append(YAML_TK['YAML_fqdn'] + ': - Discovery Failed! ' + str(error))
 
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
         # CATCH-ALL
         else:
             discvry_log.append(YAML_TK['YAML_fqdn'] + ': Discovery Error! Model Not Supported!')
             discvry_status = False
-            return(discvry_status, discvry_log, discvry_dict)
+            return(discvry_status, discvry_log, HOST_TK)
 
     except Exception as error:
         discvry_log.append(YAML_TK['YAML_fqdn'] + ': Discovery Failed! ' + str(error))
         discvry_status = False
-        return(discvry_status, discvry_log, discvry_dict)
+        return(discvry_status, discvry_log, HOST_TK)

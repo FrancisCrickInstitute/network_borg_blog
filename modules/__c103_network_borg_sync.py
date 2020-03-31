@@ -22,17 +22,17 @@ requests.packages.urllib3.disable_warnings(
 
 # DISCOVERY
 # REQ: SESSION_TK, YAML_TK
-# RTN: sync_discvry_status, sync_discvry_dict
+# RTN: sync_discvry_status, sync_HOST_TK
 def sync_discvry(SESSION_TK, YAML_TK):
 
     sync_discvry_log = []
 
     sync_discvry_log.append(YAML_TK['YAML_fqdn'] + ': > DISCVRY Module Initialised..')
-    sync_discvry_dict = {}
+    sync_HOST_TK = {}
     sync_discvry_status = False
 
     # Call Node Discovery module. Returns Node Version, Model and Netmiko Driver information
-    discvry_status, discvry_log, discvry_dict = discvry(SESSION_TK, YAML_TK)
+    discvry_status, discvry_log, HOST_TK = discvry(SESSION_TK, YAML_TK)
 
     for line in discvry_log:
         sync_discvry_log.append(line)
@@ -42,17 +42,17 @@ def sync_discvry(SESSION_TK, YAML_TK):
         if SESSION_TK['ARG_debug'] == True:
             print('\n**DEBUG (_network_borg_sync.py) : ' + YAML_TK['YAML_fqdn'] + ' Discovery Dict:')
             print('DISCOVERED:       ' + str(discvry_status))
-            print('MODEL:            ' + discvry_dict['MODEL'])
-            print('VERSION:          ' + discvry_dict['VERSION'])
-            print('GROUP:            ' + discvry_dict['GROUP'])
+            print('MODEL:            ' + HOST_TK['MODEL'])
+            print('VERSION:          ' + HOST_TK['VERSION'])
+            print('GROUP:            ' + HOST_TK['GROUP'])
 
         sync_discvry_status = True
-        sync_discvry_dict = discvry_dict
+        sync_HOST_TK = HOST_TK
 
     else:
         sync_discvry_status = False
 
-    return sync_discvry_status, sync_discvry_log, sync_discvry_dict
+    return sync_discvry_status, sync_discvry_log, sync_HOST_TK
 
 '''
 SYNC
@@ -73,8 +73,8 @@ def sync(SESSION_TK, YAML_TK):
     while sync_loop == True:
         # DISCOVERY
         # REQ: SESSION_TK, YAML_TK
-        # RTN: sync_discvry_status, sync_discvry_dict
-        sync_discvry_status, sync_discvry_log, sync_discvry_dict = sync_discvry(SESSION_TK, YAML_TK)
+        # RTN: sync_discvry_status, sync_HOST_TK
+        sync_discvry_status, sync_discvry_log, sync_HOST_TK = sync_discvry(SESSION_TK, YAML_TK)
 
         for line in sync_discvry_log:
             sync_log.append(line)

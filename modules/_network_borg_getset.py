@@ -6,7 +6,7 @@ Python3 Script to Return a Template and Payload Set for Given Environment & Mode
 __author__ = 'Paul Mahan, Francis Crick Institute, London UK'
 __copyright__ = 'None. Enjoy :-)'
 
-def getset(SESSION_TK, YAML_TK, discvry_dict):
+def getset(SESSION_TK, YAML_TK, HOST_TK):
     '''
     GETSET Function
     '''
@@ -19,10 +19,10 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
 
     if SESSION_TK['ARG_debug']: # True
         print('\n**DEBUG (_network_borg_getset.py) : GETSET Module Tokens Received:')
-        print('DISCVRY_DICT = VENDOR: ' + discvry_dict['VENDOR'] + \
-        ' VERSION: ' + discvry_dict['VERSION'] + \
-        ' MODEL: ' + discvry_dict['MODEL'] + \
-        ' GROUP:' + discvry_dict['GROUP'])
+        print('HOST_TK = VENDOR: ' + HOST_TK['VENDOR'] + \
+        ' VERSION: ' + HOST_TK['VERSION'] + \
+        ' MODEL: ' + HOST_TK['MODEL'] + \
+        ' GROUP:' + HOST_TK['GROUP'])
         print('SESSION_TK = ' + str(SESSION_TK))
         print('YAML_TK = ' + str(YAML_TK))
 
@@ -34,7 +34,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### N7K Development                                                  ###
         ########################################################################
-        if discvry_dict['GROUP'] == 'N7K':
+        if HOST_TK['GROUP'] == 'N7K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -123,7 +123,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### N5K Development                                                  ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'N5K':
+        elif HOST_TK['GROUP'] == 'N5K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -212,7 +212,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### C3K Development                                                  ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'C3K':
+        elif HOST_TK['GROUP'] == 'C3K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -301,7 +301,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         else:
             getset_status = False
             getset_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Group ' + \
-                discvry_dict['GROUP'] + ' Not Supported!!!')
+                HOST_TK['GROUP'] + ' Not Supported!!!')
 
     ########################################################################
     ###                            PRODUCTION                            ###
@@ -311,7 +311,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### N7K Production                                                   ###
         ########################################################################
-        if discvry_dict['GROUP'] == 'N7K':
+        if HOST_TK['GROUP'] == 'N7K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -400,7 +400,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### N6K (e.g. 5696Q) Production                                      ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'N6K':
+        elif HOST_TK['GROUP'] == 'N6K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -489,7 +489,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### N5K Production                                                   ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'N5K':
+        elif HOST_TK['GROUP'] == 'N5K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -566,7 +566,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### C3K Production                                                   ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'C3K':
+        elif HOST_TK['GROUP'] == 'C3K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -656,7 +656,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### C4KS8 Production                                                 ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'C4KS8':
+        elif HOST_TK['GROUP'] == 'C4KS8':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -728,7 +728,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### C4KX Production                                                  ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'C4KX':
+        elif HOST_TK['GROUP'] == 'C4KX':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -799,7 +799,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         ########################################################################
         ### C6K Production                                                   ###
         ########################################################################
-        elif discvry_dict['GROUP'] == 'C6K':
+        elif HOST_TK['GROUP'] == 'C6K':
             try:
                 # TEMPLATE SET
                 template_set = {
@@ -870,7 +870,7 @@ def getset(SESSION_TK, YAML_TK, discvry_dict):
         else:
             getset_status = False
             getset_log.append(YAML_TK['YAML_fqdn'] + ': GETSET Group ' + \
-                discvry_dict['GROUP'] + ' Not Supported!')
+                HOST_TK['GROUP'] + ' Not Supported!')
 
 
     else: # Environment
