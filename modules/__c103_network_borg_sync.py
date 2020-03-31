@@ -70,22 +70,33 @@ def sync(SESSION_TK, YAML_TK):
     CONDITIONAL WORKFLOW...
     '''
 
-    while sync_loop == True:
+    sync_log = [] # Zeroise sync_log per-pass
+    workflow = True
+    sync_status = False
+
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
+
+    '''
+    CONDITIONAL WORKFLOW...
+    '''
+    while workflow: # True
+
         # DISCOVERY
         # REQ: SESSION_TK, YAML_TK
         # RTN: sync_discvry_status, sync_HOST_TK
-        sync_discvry_status, sync_discvry_log, sync_HOST_TK = sync_discvry(SESSION_TK, YAML_TK)
+        sync_discvry_status, sync_discvry_log, sync_HOST_TK = \
+            sync_discvry(SESSION_TK, YAML_TK)
 
         for line in sync_discvry_log:
             sync_log.append(line)
 
-        if sync_discvry_status == True:
+        if not sync_discvry_status: # False
+            sync_status = False
+            workflow = False
+
+        else:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Successful ' + u'\u2714')
-
-        else: # sync_discvry_status == False:
-             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Failure ' + u'\u2714')
-             sync_loop = False
-
-        sync_loop = False # Catch all.
+            sync_status = True
+            workflow = False
 
     return sync_status, sync_log

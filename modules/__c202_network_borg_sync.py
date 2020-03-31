@@ -167,62 +167,64 @@ SYNC
 def sync(SESSION_TK, YAML_TK):
 
     sync_log = [] # Zeroise sync_log per-pass
-
+    workflow = True
     sync_status = False
-    sync_loop = True
 
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC Initialised...')
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
 
     '''
     CONDITIONAL WORKFLOW...
     '''
+    while workflow: # True
 
-    while sync_loop == True:
         # DISCOVERY
         # REQ: SESSION_TK, YAML_TK
         # RTN: sync_discvry_status, sync_HOST_TK
-        sync_discvry_status, sync_discvry_log, sync_HOST_TK = sync_discvry(SESSION_TK, YAML_TK)
+        sync_discvry_status, sync_discvry_log, sync_HOST_TK = \
+            sync_discvry(SESSION_TK, YAML_TK)
 
         for line in sync_discvry_log:
             sync_log.append(line)
 
-        if sync_discvry_status == True:
+        if not sync_discvry_status: # False
+            sync_status = False
+            workflow = False
+
+        else:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Successful ' + u'\u2714')
 
-            # GETSET
-            # REQ: SESSION_TK, YAML_TK, sync_HOST_TK)
-            # RTN: sync_getset_status, sync_getset_template, sync_getset_payload
-            sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload = sync_getset(SESSION_TK, YAML_TK, sync_HOST_TK)
+        # GETSET
+        # REQ: SESSION_TK, YAML_TK, sync_HOST_TK)
+        # RTN: sync_getset_status, sync_getset_template, sync_getset_payload
+        sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload = \
+            sync_getset(SESSION_TK, YAML_TK, sync_HOST_TK)
 
-            for line in sync_getset_log:
-                sync_log.append(line)
+        for line in sync_getset_log:
+            sync_log.append(line)
 
-            if sync_getset_status == True:
-                sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
+        if not sync_getset_status: # False
+            sync_status = False
+            workflow = False
 
-                # GETCFG (Current Configuration)
-                # REQ: SESSION_TK, YAML_TK, sync_getset_payload
-                # RTN: sync_confg_status, sync_confg_dict
-                sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict = sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload)
+        else:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
 
-                for line in sync_getcfg_log:
-                    sync_log.append(line)
+        # GETCFG (Current Configuration)
+        # REQ: SESSION_TK, YAML_TK, sync_getset_payload
+        # RTN: sync_confg_status, sync_confg_dict
+        sync_getcfg_status, sync_getcfg_log, sync_getcfg_dict = \
+                sync_getcfg(SESSION_TK, YAML_TK, sync_getset_payload)
 
-                if sync_getcfg_status == True:
-                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Successful ' + u'\u2714')
+        for line in sync_getcfg_log:
+            sync_log.append(line)
 
-                else: # sync_getcyg_status == False:
-                    sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Failure ' + u'\u2717')
-                    sync_loop = False
+        if not sync_getcfg_status: # False
+            sync_status = False
+            workflow = False
 
-            else: # sync_getset_status == False:
-                sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Failure ' + u'\u2714')
-                sync_loop = False
-
-        else: # sync_discvry_status == False:
-             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Failure ' + u'\u2714')
-             sync_loop = False
-
-        sync_loop = False # Catch all.
+        else:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETCFG Module Successful ' + u'\u2714')
+            sync_status = True
+            workflow = False
 
     return sync_status, sync_log

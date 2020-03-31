@@ -104,37 +104,62 @@ def sync(SESSION_TK, YAML_TK):
     CONDITIONAL WORKFLOW...
     '''
 
-    while sync_loop == True:
+def sync(SESSION_TK, YAML_TK):
+
+    sync_log = [] # Zeroise sync_log per-pass
+    workflow = True
+    sync_status = False
+
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
+
+    '''
+    CONDITIONAL WORKFLOW...
+    '''
+def sync(SESSION_TK, YAML_TK):
+
+    sync_log = [] # Zeroise sync_log per-pass
+    workflow = True
+    sync_status = False
+
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
+
+    '''
+    CONDITIONAL WORKFLOW...
+    '''
+    while workflow: # True
+
         # DISCOVERY
         # REQ: SESSION_TK, YAML_TK
         # RTN: sync_discvry_status, sync_HOST_TK
-        sync_discvry_status, sync_discvry_log, sync_HOST_TK = sync_discvry(SESSION_TK, YAML_TK)
+        sync_discvry_status, sync_discvry_log, sync_HOST_TK = \
+            sync_discvry(SESSION_TK, YAML_TK)
 
         for line in sync_discvry_log:
             sync_log.append(line)
 
-        if sync_discvry_status == True:
+        if not sync_discvry_status: # False
+            sync_status = False
+            workflow = False
+
+        else:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Successful ' + u'\u2714')
 
-            # GETSET
-            # REQ: SESSION_TK, YAML_TK, sync_HOST_TK)
-            # RTN: sync_getset_status, sync_getset_template, sync_getset_payload
-            sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload = sync_getset(SESSION_TK, YAML_TK, sync_HOST_TK)
+        # GETSET
+        # REQ: SESSION_TK, YAML_TK, sync_HOST_TK)
+        # RTN: sync_getset_status, sync_getset_template, sync_getset_payload
+        sync_getset_status, sync_getset_log, sync_getset_template, sync_getset_payload = \
+            sync_getset(SESSION_TK, YAML_TK, sync_HOST_TK)
 
-            for line in sync_getset_log:
-                sync_log.append(line)
+        for line in sync_getset_log:
+            sync_log.append(line)
 
-            if sync_getset_status == True:
-                sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
+        if not sync_getset_status: # False
+            sync_status = False
+            workflow = False
 
-            else: # sync_getset_status == False:
-                sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Failure ' + u'\u2714')
-                sync_loop = False
-
-        else: # sync_discvry_status == False:
-             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Failure ' + u'\u2714')
-             sync_loop = False
-
-        sync_loop = False # Catch all.
+        else:
+            sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
+            sync_status = True
+            workflow = False
 
     return sync_status, sync_log

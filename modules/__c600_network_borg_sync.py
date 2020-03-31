@@ -399,10 +399,10 @@ def sync(SESSION_TK, YAML_TK):
     RTN: sync_status, sync_log
     '''
     sync_log = [] # Zeroise sync_log per-pass
-
     workflow = True
+    sync_status = False
 
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC Initialised...')
+    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
 
     ### CONDITIONAL WORKFLOW...
     while workflow: # True
