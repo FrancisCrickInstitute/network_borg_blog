@@ -94,20 +94,7 @@ SYNC
 def sync(SESSION_TK, YAML_TK):
 
     sync_log = [] # Zeroise sync_log per-pass
-
-    sync_status = False
-    sync_loop = True
-
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC Initialised...')
-
-    '''
-    CONDITIONAL WORKFLOW...
-    '''
-
-def sync(SESSION_TK, YAML_TK):
-
-    sync_log = [] # Zeroise sync_log per-pass
-    workflow = True
+    sync_wrkflw = True
     sync_status = False
 
     sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
@@ -115,18 +102,7 @@ def sync(SESSION_TK, YAML_TK):
     '''
     CONDITIONAL WORKFLOW...
     '''
-def sync(SESSION_TK, YAML_TK):
-
-    sync_log = [] # Zeroise sync_log per-pass
-    workflow = True
-    sync_status = False
-
-    sync_log.append('\n' + YAML_TK['YAML_fqdn'] + ': SYNC WorkFlow Initialised...')
-
-    '''
-    CONDITIONAL WORKFLOW...
-    '''
-    while workflow: # True
+    while sync_wrkflw: # True
 
         # DISCOVERY
         # REQ: SESSION_TK, YAML_TK
@@ -139,7 +115,7 @@ def sync(SESSION_TK, YAML_TK):
 
         if not sync_discvry_status: # False
             sync_status = False
-            workflow = False
+            break
 
         else:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': = DISCVRY Module Successful ' + u'\u2714')
@@ -155,11 +131,11 @@ def sync(SESSION_TK, YAML_TK):
 
         if not sync_getset_status: # False
             sync_status = False
-            workflow = False
+            break
 
         else:
             sync_log.append(YAML_TK['YAML_fqdn'] + ': = GETSET Module Successful ' + u'\u2714')
             sync_status = True
-            workflow = False
+            break
 
     return sync_status, sync_log

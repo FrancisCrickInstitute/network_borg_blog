@@ -202,4 +202,6 @@ python3 *****_network_borg.py -y {YAML_GROUP/HOST}
 - Changed discovry_dict to HOST_TK to aid with flow of Blog.
 
 ### Version 0.9.9.9
-- Improved workflow in network_borg_sync.py wo its within a while statement and not nested if statements. 
+- Improved workflow in network_borg_sync.py so its within a while statement and not nested if statements.
+
+### Version 0.9.9.9_02.04.2020
