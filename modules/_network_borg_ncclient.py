@@ -10,6 +10,7 @@ from ncclient import manager # Required for NCCLIENT connection
 import xmltodict # Required to convert XML toPython DICT {
 import pprint # Required to PrettyPrint complex XML, OrderedDict structures
 import re # Required for garbx()
+import ipdb
 
 def garbx(raw_response):
     '''
@@ -86,6 +87,8 @@ def ncclient(SESSION_TK, YAML_TK, ncclient_mode, item, obj):
                 #for capabilities in m.server_capabilities:
                 #    print(capabilities)
 
+                ipdb.set_trace()
+                
                 # Get the RAW XML response which
                 raw_xml = m.exec_command({obj}).xml
 
