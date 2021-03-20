@@ -13,7 +13,7 @@ dnspython==1.16.0
 future==0.18.2
 idna==2.8
 isort==4.3.21
-Jinja2==2.10.3
+Jinja2==2.11.3
 junos-eznc==2.2.1
 lazy-object-proxy==1.4.3
 lxml==4.4.2
