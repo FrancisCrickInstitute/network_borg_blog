@@ -46,7 +46,7 @@ slackclient==2.4.0
 textfsm==1.1.0
 transitions==0.7.1
 typing-extensions==3.7.4.1
-urllib3==1.25.7
+urllib3==1.26.5
 wrapt==1.11.2
 xmltodict==0.12.0
 yamlordereddictloader==0.4.0
